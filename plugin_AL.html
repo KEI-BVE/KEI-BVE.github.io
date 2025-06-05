@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=yes, maximum-scale=1.0, minimum-scale=1.0">
+	<meta name="description" content="KEI_TechLabo">
+	<title>KEI's TechLabo - 利用規約</title>
+	<link rel="profile" href="http://gmpg.org/xfn/11">
+	<link rel="stylesheet" type="text/css" media="all" href="style.css">
+	<!--[if lt IE 9]>
+	<script src="js/html5.js"></script>
+	<script src="js/css3-mediaqueries.js"></script>
+	<![endif]-->
+	<script src="js/jquery1.4.4.min.js"></script>
+	<script src="js/script.js"></script>
+</head>
+
+<body>
+
+	<header id="header" role="banner">
+		<div class="logo">
+			<a href="index.html" title="KEI_TechLabo" rel="home">KEI's TechLabo<span>Train & Music</span></a>
+		</div>
+		<div class="info">
+			<p class="tel">aaa</p>
+			<p class="open">aaa</p>
+		</div>
+	</header>
+
+	<nav id="mainNav">
+		<div class="inner">
+			<a class="menu" id="menu"><span>MENU</span></a>
+			<div class="panel">
+				<ul>
+					<li class="current-menu-item"><a href="index.html"><strong>トップページ</strong></a></li>
+					<li>
+						<a><strong>BveTrainsim</strong></a>
+						<ul class="sub-menu">
+							<li><a href="start.html">利用規約</a></li>
+							<li><a href="data.html">データ</a></li>
+							<li><a href="quiestions.html">よくある質問</a></li>
+							<li><a href="links.html">リンク集</a></li>
+						</ul>
+					</li>
+					<li>
+						<a><strong>BveEX</strong></a>
+						<ul class="sub-menu">
+							<li><a href="plugins.html">はじめに</a></li>
+							<li><a href="plugin_AL.html">列車接近灯を作ろう</a></li>
+							<li><a href="plugin_FD.html">FD表示灯を作ろう</a></li>
+						</ul>
+					</li>
+					<li>
+						<a><strong>耳コピ楽譜</strong></a>
+						<ul class="sub-menu">
+							<li><a href="california.html">カリフォルニア・シャワーA ピアノ連弾</a></li>
+							<li><a href="sakura.html">さくら住宅街 ピアノ連弾</a></li>
+							<li><a href="bikego.html">じてんしゃでゴー！ ピアノ連弾</a></li>
+						</ul>
+					</li>
+					<li><a href="sample.html"><strong>お問い合わせ</strong></a></li>
+					<li><a href="sample.html"><strong>管理人紹介</strong></a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div id="wrapper">
+
+		<section id="content">
+			<section id="post-250" class="content">
+				<h3 class="heading">列車接近灯を作ろう</h3>
+				<article class="post">
+						<h3>①概要</h3>
+							<p>
+								　駅や線路脇に置いてあり、列車が接近すると点滅しだすアレです。おそらく保線作業員さんなどに列車の接近を伝えるためにあるのだと思います。
+								今までのBVEでは、「ストラクチャを動かす・変更する＝他列車を応用する」という考えが一般的でしたが、BveEXの登場後その必要はなくなりました。
+							</p>
+						<h3>②準備</h3>
+							<p>
+								　まず、ストラクチャを準備します。今回は<a href="https://fcs-rail.tech/">FCS鉄道工房様の色灯式信号 ver 2.1</a>を使用させていただきました。<br>
+								　次に、BveEXプラグイン用のプロジェクトを作ります。おーとまさんのHPやBveEXの解説本を読んでプロジェクトを作成し、Nugetからパッケージのインストールを済ませました。
+							</p>
+						<h3>③コードを書く</h3>
+							<p>
+								　ファイル・フォルダ類の準備ができたところで、早速プラグインを作っていきます。まず、<b>using句</b>と<b>AssemblyPluginBase</b>から。
+								<pre><code class="language-csharp">
+using System;
+using System.Drawing;
+
+using BveTypes.ClassWrappers;
+
+using BveEx.PluginHost;
+using BveEx.PluginHost.Plugins;
+using Zbx1425.DXDynamicTexture;
+
+using System.IO;
+using System.Reflection;
+
+
+namespace BveEx.Samples.MapPlugins.ApproachLamps
+{
+    [Plugin(PluginType.MapPlugin)]
+    public class ApproachLamps : AssemblyPluginBase
+    {
+     ***
+    }
+}
+								
+								</code></pre>
+								これで、BveEXに対してこのコードがBveEXプラグインであることを知らせることができます。
+							</p>
+						<h3>①概要</h3>
+							<p>
+								　駅や線路脇に置いてあり、列車が接近すると点滅しだすアレです。おそらく保線作業員さんなどに列車の接近を伝えるためにあるのだと思います。
+								今までのBVEでは、「ストラクチャを動かす・変更する＝他列車を応用する」という考えが一般的でしたが、BveEXの登場後その必要はなくなりました。
+							</p>
+						<h3>①概要</h3>
+							<p>
+								　駅や線路脇に置いてあり、列車が接近すると点滅しだすアレです。おそらく保線作業員さんなどに列車の接近を伝えるためにあるのだと思います。
+								今までのBVEでは、「ストラクチャを動かす・変更する＝他列車を応用する」という考えが一般的でしたが、BveEXの登場後その必要はなくなりました。
+							</p>
+						<h3>①概要</h3>
+							<p>
+								　駅や線路脇に置いてあり、列車が接近すると点滅しだすアレです。おそらく保線作業員さんなどに列車の接近を伝えるためにあるのだと思います。
+								今までのBVEでは、「ストラクチャを動かす・変更する＝他列車を応用する」という考えが一般的でしたが、BveEXの登場後その必要はなくなりました。
+							</p>
+				</article>
+			</section>
+		</section>
+	</div>
+
+</div>
+
+</body>
+</html>
