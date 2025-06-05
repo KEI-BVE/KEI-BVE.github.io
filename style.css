@@ -26,64 +26,60 @@ h3 {
   margin-bottom: 16px;
 }
 
-header {
-	background-image: url("images/banners/main.jpg"); /* 画像パスを適宜変更 */
-	background-size: cover; /* 全体にフィット */
-	background-position: center center; /* 中央寄せ */
-	background-repeat: no-repeat;
-	width: 1160px;
+#header {
+	background-image: url("images/banners/main.jpg");
 }
 
 /* ========================
    グリッド
    ======================== */
-.gridWrapper{
- max-width: 1200px;
- margin: 0 auto;
- padding: 0 20px;
+.gridWrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
-* html .gridWrapper{height:1%;}
-	
-.grid{
-overflow:hidden;
+.grid {
+  width: 100%;
 }
 
-.box{
-padding:10px;
+.box {
+  padding: 10px;
+  background-color: #f9f9f9;
+  box-sizing: border-box;
 }
 
-.box img{
-max-width:100%;
-height:auto;
+.box img,
+.box iframe {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
 }
 
-.box h3{
-font-size:16px;
-padding:10px 0 15px;
+.box h3 {
+  font-size: 16px;
+  padding: 10px 0 15px;
+  text-align: left;
 }
 
-.box h3, .box p{text-align:left;}
-
-.box p.readmore{
-padding:10px 5px 5px;
-text-align:right;
+.box p {
+  text-align: left;
 }
 
-.box p.readmore a{
-padding:3px 7px;
-border-radius:3px;
+.box p.readmore {
+  padding: 10px 5px 5px;
+  text-align: right;
 }
 
-.gridWrapper{
-display:table;
-border-collapse:separate;
-border-spacing:0px;
-}
-
-.grid{
-width:320px;
-display:table-cell;
+.box p.readmore a {
+  padding: 3px 7px;
+  border-radius: 3px;
+  background-color: #ddd;
+  text-decoration: none;
 }
 
 /* ========================
@@ -92,23 +88,80 @@ display:table-cell;
 #header {
   background-color: #222;
   color: #fff;
-  padding: 20px;
-  display: flex;
   justify-content: space-between;
   align-items: center;
 }
 #header .logo a {
   color: #fff;
   text-decoration: none;
-  font-size: 24px;
+  padding-left: 20px;
+  font-size: 30px;
 }
 #header .logo span {
+  color: #fff;
   display: block;
-  font-size: 14px;
-  color: #ccc;
+  padding-left: 20px;
+  font-size: 20px;
 }
-#header .info {
-  text-align: right;
+
+
+/* ========================
+   フッター部分のデザイン
+   ======================== */
+#footer{
+clear:both;
+}
+
+#footer a:hover{
+color:#999;
+}
+
+#footer .inner{
+padding:40px 0;
+overflow:hidden;
+}
+
+#footer .grid{
+margin:0;
+}
+
+#footer #info{float:left;}
+
+#footer #info .info{float:none;}
+
+#footer #info .info{
+clear:both;
+padding:5px 0 0;
+text-align:left;
+}
+
+#footer .logo{font-size:18px;}
+
+#footer .info .tel,#footer .info .tel span,#footer #info .open{
+font-size:12px;
+}
+
+ul.footnav{
+float:right;
+width:620px;
+padding:10px 0;
+}
+ul.footnav ul{display:none;}
+
+ul.footnav li{
+float:left;
+margin:10px 0 10px 0;
+padding:0 7px 0 8px;
+border-right:1px solid #ebebeb;
+}
+
+#copyright{
+clear:both;
+padding:20px 0 10px 0;
+text-align:center;
+font-style:normal;
+font-size:12px;
+color:#000;
 }
 
 /* ========================
@@ -169,7 +222,7 @@ display:table-cell;
   /* サブメニューを持つ親メニューにだけ▼を付ける */
   #mainNav .panel ul > li:has(> .sub-menu) > a::after {
     content: " ▼";
-    font-size: 0.7em;
+    font-size: 0.8em;
   }
 
   /* サブメニューの初期状態は非表示 */
@@ -180,7 +233,7 @@ display:table-cell;
     left: 0;
     background-color: #444;
     padding: 10px 0;
-    min-width: 150px;
+    min-width: 200px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
     z-index: 999;
   }
@@ -215,3 +268,5 @@ display:table-cell;
   #mainNav .panel ul > li > a:hover,
   .sub-menu li > a:hover {
     background-color: #555;
+
+	
