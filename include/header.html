@@ -46,4 +46,40 @@
 			</div>
 		</div>
 	</nav>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const menuBtn = document.querySelector("#mainNav .menu");
+    const nav = document.getElementById("mainNav");
+
+    menuBtn.addEventListener("click", () => {
+      nav.classList.toggle("active");
+    });
+
+    // サブメニューの開閉
+    const links = document.querySelectorAll("#mainNav .panel ul > li > a");
+
+    links.forEach(link => {
+      const sub = link.nextElementSibling;
+      if (sub && sub.classList.contains("sub-menu")) {
+        link.addEventListener("click", (e) => {
+          e.preventDefault();
+          sub.classList.toggle("open");
+        });
+      }
+    });
+  });
+
+  document.querySelectorAll('#mainNav .panel ul > li').forEach(li => {
+  if (!li.querySelector('.sub-menu')) {
+    const link = li.querySelector('a');
+    if (link) {
+      // ▼を表示させる疑似要素用のクラスを除去、あるいはdata属性を付けてCSSで制御
+      link.classList.add('no-submenu');
+    }
+  }
+});
+
+</script>
+
 </body>
