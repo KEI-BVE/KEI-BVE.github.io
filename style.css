@@ -1,0 +1,470 @@
+/* ========================
+   全体レイアウトの設定
+   ======================== */
+body {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  font-family: "Helvetica", "Arial", sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  background: #fff;
+  color: #333;
+}
+
+/* スマホ等の小画面でパディング調整 */
+@media screen and (max-width: 768px) {
+  body, .gridWrapper {
+    padding: 0 10px;
+  }
+
+  /* グリッドは1カラムにして幅を広げる */
+  .gridWrapper {
+    grid-template-columns: 1fr !important;
+    gap: 15px;
+  }
+
+  /* フォントサイズを少し小さめに */
+  body {
+    font-size: 14px;
+  }
+
+  /* ヘッダーロゴのサイズ調整 */
+  #header .logo a {
+    font-size: 24px;
+    padding-left: 10px;
+  }
+  #header .logo span {
+    font-size: 16px;
+    padding-left: 10px;
+  }
+
+  /* ナビゲーションのメニューを縦並びに */
+  #mainNav .inner {
+    flex-direction: column;
+  }
+
+  /* メニュー表示の切り替えボタンを表示 */
+  #mainNav .menu {
+    display: block;
+  }
+
+  /* メニューのパネルは初期非表示 */
+  #mainNav .panel {
+    display: none;
+    background-color: #444;
+  }
+
+  /* メニュー開閉時の表示 */
+  #mainNav.active .panel {
+    display: block;
+  }
+
+  /* メニュー項目を縦並び */
+  #mainNav .panel ul {
+    flex-direction: column;
+  }
+
+  #mainNav .panel ul > li {
+    margin: 0;
+    border-bottom: 1px solid #555;
+  }
+
+  #mainNav .panel ul > li > a {
+    display: block;
+    padding: 12px 15px;
+  }
+
+  /* タップしやすいボタンサイズに */
+  .box p.readmore a {
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+}
+
+/* h3の下線スタイル追加 */
+h3 {
+  border-bottom: 2px solid #333;
+  padding-bottom: 4px;
+  margin-bottom: 16px;
+}
+
+#header {
+  background-image: url("images/banners/main.jpg");
+}
+
+/* ========================
+   グリッド
+   ======================== */
+.gridWrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.grid {
+  width: 100%;
+}
+
+.box {
+  padding: 10px;
+  background-color: #f9f9f9;
+  box-sizing: border-box;
+}
+
+.box img,
+.box iframe {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.box h3 {
+  font-size: 16px;
+  padding: 10px 0 15px;
+  text-align: left;
+}
+
+.box p {
+  text-align: left;
+}
+
+.box p.readmore {
+  padding: 10px 5px 5px;
+  text-align: right;
+}
+
+.box p.readmore a {
+  padding: 3px 7px;
+  border-radius: 3px;
+  background-color: #ddd;
+  text-decoration: none;
+}
+
+/* ========================
+   ヘッダー部分のデザイン
+   ======================== */
+#header {
+  background-color: #222;
+  color: #fff;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#header .logo a {
+  color: #fff;
+  text-decoration: none;
+  padding-left: 20px;
+  font-size: 30px;
+}
+
+#header .logo span {
+  color: #fff;
+  display: block;
+  padding-left: 20px;
+  font-size: 20px;
+}
+
+/* ========================
+   フッター部分のデザイン
+   ======================== */
+#footer {
+  clear: both;
+}
+
+#footer a:hover {
+  color: #999;
+}
+
+#footer .inner {
+  padding: 40px 0;
+  overflow: hidden;
+}
+
+#footer .grid {
+  margin: 0;
+}
+
+#footer #info {
+  float: left;
+}
+
+#footer #info .info {
+  float: none;
+}
+
+#footer #info .info {
+  clear: both;
+  padding: 5px 0 0;
+  text-align: left;
+}
+
+#footer .logo {
+  font-size: 18px;
+}
+
+#footer .info .tel,
+#footer .info .tel span,
+#footer #info .open {
+  font-size: 12px;
+}
+
+ul.footnav {
+  float: right;
+  width: 620px;
+  padding: 10px 0;
+}
+
+ul.footnav ul {
+  display: none;
+}
+
+ul.footnav li {
+  float: left;
+  margin: 10px 0 10px 0;
+  padding: 0 7px 0 8px;
+  border-right: 1px solid #ebebeb;
+}
+
+#copyright {
+  clear: both;
+  padding: 20px 0 10px 0;
+  text-align: center;
+  font-style: normal;
+  font-size: 12px;
+  color: #000;
+}
+
+/* ========================
+   YouTube動画の埋め込み
+   ======================== */
+.youtube {
+  width: 100%;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.youtube .inner {
+  padding-top: 56.25%;
+  position: relative;
+  height: 0;
+  overflow: hidden;
+}
+
+.youtube .inner iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ========================
+   ナビゲーションメニュー
+   ======================== */
+#mainNav {
+  background-color: #333;
+}
+
+#mainNav .inner {
+  display: flex;
+  flex-direction: column;
+}
+
+#mainNav .menu {
+  background-color: #444;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+
+/* PC表示のスタイル */
+@media screen and (min-width: 769px) {
+  /* MENUボタンは非表示 */
+  #mainNav .menu {
+    display: none;
+  }
+
+  /* メニュー本体を常に表示し、中央寄せ */
+  #mainNav .panel {
+    display: block !important;
+    text-align: center;
+  }
+
+  /* メニューリストを横並びで中央に */
+  #mainNav .panel ul {
+    display: inline-flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* メニューリストの項目 */
+  #mainNav .panel ul > li {
+    position: relative;
+    margin: 0 15px;
+  }
+
+  /* メニューリンク */
+  #mainNav .panel ul > li > a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: inline-block;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  /* サブメニューを持つ親メニューにだけ▼を付ける */
+  #mainNav .panel ul > li:has(> .sub-menu) > a::after {
+    content: " ▼";
+    font-size: 0.8em;
+  }
+
+  /* サブメニューの初期状態は非表示 */
+  .sub-menu {
+    display: none !important;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #444;
+    padding: 10px 0;
+    min-width: 200px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    z-index: 999;
+  }
+
+  /* サブメニュー内リスト */
+  .sub-menu li {
+    margin: 0;
+    position: relative;
+  }
+
+  /* サブメニューリンク */
+  .sub-menu li a {
+    color: #fff;
+    padding: 8px 15px;
+    display: block;
+    text-decoration: none;
+    font-weight: normal;
+  }
+
+  /* サブメニュー内にサブメニューがあっても▼はなし */
+  .sub-menu li:has(> .sub-menu) > a::after {
+    content: "";
+  }
+
+  /* ホバー時にサブメニューを表示 */
+  #mainNav .panel ul > li:hover > .sub-menu,
+  .sub-menu li:hover > .sub-menu {
+    display: block !important;
+  }
+
+  /* ホバー時の背景色変化 */
+  #mainNav .panel ul > li > a:hover,
+  .sub-menu li > a:hover {
+    background-color: #555;
+  }
+}
+
+/* ========================
+   用語
+   ======================== */
+code {
+  background-color: #2d2d2d;   /* ダークな背景 */
+  color: #f8f8f2;              /* 明るいテキスト色 */
+  padding: 0.2em 0.4em;        /* 少し内側余白 */
+  border-radius: 4px;          /* 角丸 */
+  font-family: 'Source Code Pro', Consolas, Monaco, 'Courier New', monospace;
+  font-size: 0.95em;           /* 少し小さめ */
+  white-space: nowrap;         /* 改行させない */
+  user-select: text;           /* テキスト選択可能 */
+}
+
+/* ========================
+   コードブロック
+   ======================== */
+.code-block {
+  position: relative;
+  background: #2d2d2d;
+  color: #ccc;
+  border-radius: 6px;
+  font-family: "Fira Code", monospace;
+  font-size: 14px;
+  overflow-x: auto;
+  word-break: break-word;
+}
+
+/* コピー用ボタン */
+.code-header {
+  position: absolute;
+  top: 20px;
+  right: 15px;
+  z-index: 10;
+}
+
+.copy-btn {
+  background-color: #444;
+  border: none;
+  color: #eee;
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.copy-btn:hover {
+  background-color: #666;
+}
+
+/* Highlight.js 行番号部分の調整 */
+.hljs-ln-numbers {
+  width: 1em;        /* 行番号の幅は固定 */
+  text-align: right;   /* 右揃えで数字を詰める */
+  user-select: none;
+  color: #888;
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
+  font-family: monospace;
+  /* padding-right を外す */
+}
+
+.hljs-ln-numbers > div {
+  line-height: 1.5em;
+  font-size: 14px;
+  font-family: monospace;
+
+  padding-right: 1em;  /* ← ここで「数字の右」に余白を追加 */
+}
+
+/* キーワード（using, namespace, class, publicなど） */
+.hljs-keyword {
+  color: #569CD6 !important;  /* しっかり目の青 */
+  font-weight: 600;           /* 太め */
+}
+
+/* クラス名や型名 */
+.hljs-title, .hljs-type {
+  color: #9CDCFE !important;  /* 明るめの青 */
+}
+
+/* 名前空間や関数名 */
+.hljs-function {
+  color: #D7BA7D !important;  /* ベージュっぽい色 */
+}
+
+/* 文字列 */
+.hljs-string {
+  color: #CE9178 !important;  /* 柔らかい茶色 */
+}
+
+/* コメント */
+.hljs-comment {
+  color: #6A9955 !important;  /* 落ち着いた緑色 */
+  font-style: italic;
+}

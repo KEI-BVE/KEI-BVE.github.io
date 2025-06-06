@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, user-scalable=yes, maximum-scale=1.0, minimum-scale=1.0" />
+  <meta name="description" content="KEI’s TechLabo" />
+  <title>KEI's TechLabo - 列車接近灯</title>
+  <link rel="profile" href="http://gmpg.org/xfn/11" />
+  <link rel="stylesheet" type="text/css" media="all" href="style.css" />
+  <script src="js/jquery1.4.4.min.js"></script>
+  <script src="js/script.js"></script>
+  <link rel="icon" href="images/banners/favicon.ico" />
+  <!-- HighLight.js -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/dark.min.css" />
+</head>
+
+  <header id="header"></header>
+  <script src="js/header.js"></script>
+
+<body>
+  <div id="wrapper">
+    <section id="content">
+      <section id="post-250" class="content">
+        <h3 class="heading">列車接近灯を作ろう</h3>
+        <article class="post">
+          <h4>①概要</h4>
+          <p>
+            駅や線路脇に置いてあり、列車が接近すると点滅しだすアレです。おそらく保線作業員さんなどに列車の接近を伝えるためにあるのだと思います。
+            今までのBVEでは、「ストラクチャを動かす・変更する＝他列車を応用する」という考えが一般的でしたが、BveEXの登場後その必要はなくなりました。
+          </p>
+          <h4>②準備</h4>
+          <p>
+            まず、ストラクチャを準備します。今回は
+            <a href="https://fcs-rail.tech/">FCS鉄道工房様の色灯式信号 ver 2.1</a>
+            を使用させていただきました。<br />
+            次に、BveEXプラグイン用のプロジェクトを作ります。おーとまさんのHPやBveEXの解説本を読んでプロジェクトを作成し、Nugetからパッケージのインストールを済ませました。
+          </p>
+          <h4>③コードを書く</h4>
+          <p>
+            ファイル・フォルダ類の準備ができたところで、早速プラグインを作っていきます。まず、
+            <code>using</code>句と<code>AssemblyPluginBase</code>から。
+            これで、BveEXに対してこのコードがBveEXプラグインであることを知らせることができます。
+          </p>
+          <div class="code-block">
+            <div class="code-header">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code class="language-cs">using System;
+using System.Drawing;
+
+using BveTypes.ClassWrappers;
+
+using BveEx.PluginHost;
+using BveEx.PluginHost.Plugins;
+using Zbx1425.DXDynamicTexture;
+
+using System.IO;
+using System.Reflection;
+
+namespace BveEx.Samples.MapPlugins.ApproachLamps
+{
+    [Plugin(PluginType.MapPlugin)]
+    public class ApproachLamps : AssemblyPluginBase
+    {
+     ***
+    }
+}</code></pre>
+          </div>
+          <h4>④完成</h4>
+          <p></p>
+        </article>
+      </section>
+    </section>
+  </div>
+
+  <header id="footer"></header>
+  <script src="js/footer.js"></script>
+
+  <script>
+    function copyCode(btn) {
+      const code = btn.closest(".code-block").querySelector("code").innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        btn.textContent = "Copied!";
+        setTimeout(() => {
+          btn.textContent = "Copy";
+        }, 1500);
+      });
+    }
+  </script>
+
+  <!-- Highlight.js本体 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+
+  <!-- C#言語定義 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/cs.min.js"></script>
+
+  <!-- 行番号プラグイン -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+
+  <script>
+    hljs.highlightAll();
+    hljs.initLineNumbersOnLoad();
+  </script>
+
+</body>
+</html>
