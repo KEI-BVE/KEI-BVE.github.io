@@ -49,11 +49,11 @@ body {
     display: block;
   }
 
-  /* メニューのパネルは初期非表示 */
-  #mainNav .panel {
+  /* メニューのパネルは初期非表示 → ここは削除して下で固定表示に変更 */
+  /* #mainNav .panel {
     display: none;
     background-color: #444;
-  }
+  } */
 
   /* メニュー開閉時の表示 */
   #mainNav.active .panel {
@@ -371,6 +371,78 @@ ul.footnav li {
   .sub-menu li > a:hover {
     background-color: #555;
   }
+}
+
+/* スマホメニュー全体 */
+@media screen and (max-width: 768px) {
+  #mainNav .panel {
+    position: fixed;
+    top: 0;
+    right: 0px; /* 初期は隠す */
+    width: 300px;
+    height: 100%;
+    background: #000;
+    z-index: 999;
+    padding: 60px 20px;
+    transition: right 0.3s ease;
+    overflow-y: auto;
+  }
+
+  #mainNav .panel.open {
+    right: 0;
+  }
+
+  #mainNav .panel ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  #mainNav .panel ul li {
+    border-bottom: 1px solid #333;
+  }
+
+  #mainNav .panel ul li a {
+    display: block;
+    padding: 15px 10px;
+    color: #fff;
+    text-decoration: none;
+  }
+
+  /* サブメニューを持つ親liには.has-subクラスを付与済み */
+  #mainNav .panel ul > li.has-sub > ul.sub-menu {
+    display: none;
+    padding-left: 15px;
+    transition: all 0.3s ease;
+  }
+
+  #mainNav .panel ul > li.has-sub.open > ul.sub-menu {
+    display: block;
+  }
+
+  /* 矢印表示（開閉） */
+  #mainNav .panel ul > li.has-sub > a::after {
+    content: " ▼";
+    font-size: 0.8em;
+    color: #aaa;
+  }
+
+  #mainNav .panel ul > li.has-sub.open > a::after {
+    content: " ▲";
+  }
+}
+
+#mainNav .menu {
+  position: fixed;
+  top: 10px;
+  right: 20px;
+  background-color: #444;
+  color: #fff;
+  padding: 10px 15px;
+  cursor: pointer;
+  z-index: 1000;
+  border-radius: 4px;
+  user-select: none;
 }
 
 /* ========================

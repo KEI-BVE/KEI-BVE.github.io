@@ -11,7 +11,7 @@
 	
 	<nav id="mainNav">
 		<div class="inner">
-			<a class="menu" id="menu"><span>MENU</span></a>
+			<a class="menu" id="menu"><span>☰</span></a>
 			<div class="panel">
 				<ul>
 					<li class="current-menu-item"><a href="index.html"><strong>トップページ</strong></a></li>
@@ -49,38 +49,36 @@
 	</nav>
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const menuBtn = document.querySelector("#mainNav .menu");
-    const nav = document.getElementById("mainNav");
+document.addEventListener("DOMContentLoaded", function () {
+  const menuBtn = document.querySelector("#mainNav .menu");
+  const navPanel = document.querySelector("#mainNav .panel");
 
+  // ハンバーガーメニュー開閉（スマホ用）
+  if (menuBtn && navPanel) {
     menuBtn.addEventListener("click", () => {
-      nav.classList.toggle("active");
+      navPanel.classList.toggle("open");
     });
+  }
 
-    // サブメニューの開閉
-    const links = document.querySelectorAll("#mainNav .panel ul > li > a");
-
-    links.forEach(link => {
-      const sub = link.nextElementSibling;
-      if (sub && sub.classList.contains("sub-menu")) {
-        link.addEventListener("click", (e) => {
-          e.preventDefault();
-          sub.classList.toggle("open");
-        });
-      }
-    });
+  // 親liに.has-subクラスを付与
+  document.querySelectorAll("#mainNav .panel ul > li").forEach(li => {
+    if (li.querySelector(".sub-menu")) {
+      li.classList.add("has-sub");
+    }
   });
 
-  document.querySelectorAll('#mainNav .panel ul > li').forEach(li => {
-  if (!li.querySelector('.sub-menu')) {
-    const link = li.querySelector('a');
-    if (link) {
-      // ▼を表示させる疑似要素用のクラスを除去、あるいはdata属性を付けてCSSで制御
-      link.classList.add('no-submenu');
-    }
+  // サブメニュー開閉処理（スマホのみ）
+  const isMobile = window.matchMedia("(max-width: 768px)").matches;
+  if (isMobile) {
+    document.querySelectorAll("#mainNav .panel ul > li.has-sub > a").forEach(link => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault(); // サブメニュー展開のためリンク遷移キャンセル
+        const parentLi = link.parentElement;
+        parentLi.classList.toggle("open");
+      });
+    });
   }
 });
-
 </script>
 
 </body>
