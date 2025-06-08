@@ -1,84 +1,120 @@
 <!DOCTYPE html>
 <html lang="ja">
 
+  <header id="header" role="banner">
+    <div class="logo">
+      <br><br><br><a href="index.html" title="KEI's TechLabo" rel="home">KEI's TechLabo<span>Train & Music</span></a><br><br><br>
+    </div>
+  </header>
+
 <body>
+  <nav id="mainNav">
+    <div class="inner">
+      <a class="menu" id="menu"><span>☰</span></a>
+      <div class="panel">
+        <ul>
+          <li class="current-menu-item"><a href="index.html"><strong>トップページ</strong></a></li>
+          <li>
+            <a href="#"><strong>BveTrainsim</strong></a>
+            <ul class="sub-menu">
+              <li><a href="start.html">利用規約</a></li>
+              <li><a href="data.html">データ</a></li>
+              <li><a href="questions.html">よくある質問</a></li>
+              <li><a href="links.html">リンク集</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="#"><strong>BveEX</strong></a>
+            <ul class="sub-menu">
+              <li><a href="plugins.html">はじめに</a></li>
+              <li><a href="plugin_AL.html">列車接近灯を作ろう</a></li>
+              <li><a href="plugin_FD.html">FD表示灯を作ろう（工事中）</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="#"><strong>耳コピ楽譜</strong></a>
+            <ul class="sub-menu">
+              <li><a href="sheets.html">はじめに</a></li>
+              <li><a href="california.html">カリフォルニア・シャワーA ピアノ連弾</a></li>
+              <li><a href="sakura.html">さくら住宅街 ピアノ連弾</a></li>
+              <li><a href="bikego.html">じてんしゃでゴー！ ピアノ連弾</a></li>
+            </ul>
+          </li>
+          <li><a href="contact.html"><strong>お問い合わせ</strong></a></li>
+          <li><a href="introduce.html"><strong>管理人紹介</strong></a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
-	<header id="header" role="banner">
-		<div class="logo">
-			<br><br><br><a href="index.html" title="KEI's TechLabo" rel="home">KEI's TechLabo<span>Train & Music</span></a><br><br><br>
-		</div>
-	</header>
-	
-	<nav id="mainNav">
-		<div class="inner">
-			<a class="menu" id="menu"><span>☰</span></a>
-			<div class="panel">
-				<ul>
-					<li class="current-menu-item"><a href="index.html"><strong>トップページ</strong></a></li>
-					<li>
-						<a><strong>BveTrainsim</strong></a>
-						<ul class="sub-menu">
-							<li><a href="start.html">利用規約</a></li>
-							<li><a href="data.html">データ</a></li>
-							<li><a href="questions.html">よくある質問</a></li>
-							<li><a href="links.html">リンク集（工事中）</a></li>
-						</ul>
-					</li>
-					<li>
-						<a><strong>BveEX</strong></a>
-						<ul class="sub-menu">
-							<li><a href="plugins.html">はじめに</a></li>
-							<li><a href="plugin_AL.html">列車接近灯を作ろう（工事中）</a></li>
-							<li><a href="plugin_FD.html">FD表示灯を作ろう（工事中）</a></li>
-						</ul>
-					</li>
-					<li>
-						<a><strong>耳コピ楽譜</strong></a>
-						<ul class="sub-menu">
-							<li><a href="sheets.html">はじめに</a></li>
-							<li><a href="california.html">カリフォルニア・シャワーA ピアノ連弾</a></li>
-							<li><a href="sakura.html">さくら住宅街 ピアノ連弾</a></li>
-							<li><a href="bikego.html">じてんしゃでゴー！ ピアノ連弾</a></li>
-						</ul>
-					</li>
-					<li><a href="contact.html"><strong>お問い合わせ</strong></a></li>
-					<li><a href="introduce.html"><strong>管理人紹介</strong></a></li>
-				</ul>
-			</div>
-		</div>
-	</nav>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
+ <script>
+  document.addEventListener("DOMContentLoaded", function () {
   const menuBtn = document.querySelector("#mainNav .menu");
   const navPanel = document.querySelector("#mainNav .panel");
 
-  // ハンバーガーメニュー開閉（スマホ用）
   if (menuBtn && navPanel) {
+    // メニュー開閉
     menuBtn.addEventListener("click", () => {
       navPanel.classList.toggle("open");
     });
+
+    // メニュー外クリックで閉じる
+    document.addEventListener("click", (e) => {
+      const isClickInside = navPanel.contains(e.target) || menuBtn.contains(e.target);
+      if (!isClickInside) {
+        navPanel.classList.remove("open");
+      }
+    });
   }
 
-  // 親liに.has-subクラスを付与
+  // サブメニューを持つliにクラス付与
   document.querySelectorAll("#mainNav .panel ul > li").forEach(li => {
     if (li.querySelector(".sub-menu")) {
       li.classList.add("has-sub");
     }
   });
 
-  // サブメニュー開閉処理（スマホのみ）
-  const isMobile = window.matchMedia("(max-width: 768px)").matches;
-  if (isMobile) {
+  function setupSubMenuToggle() {
+    // 既存のイベントを一旦解除するため、クローンに置換（リセット）
     document.querySelectorAll("#mainNav .panel ul > li.has-sub > a").forEach(link => {
-      link.addEventListener("click", (e) => {
-        e.preventDefault(); // サブメニュー展開のためリンク遷移キャンセル
-        const parentLi = link.parentElement;
-        parentLi.classList.toggle("open");
-      });
+      const newLink = link.cloneNode(true);
+      link.parentNode.replaceChild(newLink, link);
     });
+
+    if (window.matchMedia("(max-width: 768px)").matches) {
+      document.querySelectorAll("#mainNav .panel ul > li.has-sub > a").forEach(link => {
+        link.addEventListener("click", (e) => {
+          e.preventDefault();
+          // e.stopPropagation() は外しました
+
+          const parentLi = link.parentElement;
+
+          // 他の開いているサブメニューを閉じる
+          document.querySelectorAll("#mainNav .panel ul > li.has-sub.open").forEach(openLi => {
+            if (openLi !== parentLi) {
+              openLi.classList.remove("open");
+            }
+          });
+
+          parentLi.classList.toggle("open");
+        });
+      });
+
+      // メニュー内リンククリックでメニュー閉じる
+      navPanel.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => {
+          navPanel.classList.remove("open");
+        });
+      });
+    }
   }
+
+  setupSubMenuToggle();
+
+  // リサイズ時にも再セットアップ
+  window.addEventListener("resize", setupSubMenuToggle);
 });
 </script>
 
 </body>
+</html>

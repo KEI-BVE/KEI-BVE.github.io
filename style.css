@@ -2,7 +2,7 @@
    全体レイアウトの設定
    ======================== */
 body {
-  max-width: 1900px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0 3px;
   font-family: "Helvetica", "Arial", sans-serif;
@@ -49,36 +49,68 @@ body {
     display: block;
   }
 
-  /* メニューのパネルは初期非表示 → ここは削除して下で固定表示に変更 */
-  /* #mainNav .panel {
-    display: none;
-    background-color: #444;
-  } */
-
-  /* メニュー開閉時の表示 */
-  #mainNav.active .panel {
-    display: block;
+  /* メニューのパネルを固定表示 */
+  #mainNav .panel {
+    position: fixed;
+    top: 0;
+    right: 0px; /* 初期は隠す */
+    width: 300px;
+    height: 100%;
+    background: #000;
+    z-index: 999;
+    padding: 60px 20px;
+    transition: right 0.3s ease;
+    overflow-y: auto;
   }
 
-  /* メニュー項目を縦並び */
+  #mainNav .panel.open {
+    right: 0;
+  }
+
   #mainNav .panel ul {
-    flex-direction: column;
-  }
-
-  #mainNav .panel ul > li {
+    list-style: none;
+    padding: 0;
     margin: 0;
-    border-bottom: 1px solid #555;
   }
 
-  #mainNav .panel ul > li > a {
+  #mainNav .panel ul li {
+    border-bottom: 1px solid #333;
+  }
+
+  #mainNav .panel ul li a {
     display: block;
-    padding: 12px 15px;
+    padding: 15px 10px;
+    color: #fff;
+    text-decoration: none;
   }
 
-  /* タップしやすいボタンサイズに */
-  .box p.readmore a {
-    padding: 10px 14px;
-    font-size: 14px;
+  /* サブメニューを持つ親liには.has-subクラスを付与済み */
+  #mainNav .panel ul > li.has-sub > ul.sub-menu {
+    display: none;
+    padding-left: 15px;
+    transition: all 0.3s ease;
+  }
+
+  #mainNav .panel ul > li.has-sub.open > ul.sub-menu {
+    display: block;
+  }
+
+  /* 親メニューのリンクにpositionをつける（矢印表示のため） */
+  #mainNav .panel ul > li.has-sub > a {
+    position: relative;
+  }
+
+  /* 矢印表示（開閉） */
+  #mainNav .panel ul > li.has-sub > a::after {
+    content: " ▼";
+    font-size: 0.8em;
+    color: #aaa;
+    margin-left: 5px;
+    pointer-events: none;
+  }
+
+  #mainNav .panel ul > li.has-sub.open > a::after {
+    content: " ▲";
   }
 }
 
@@ -91,6 +123,32 @@ h3 {
 
 #header {
   background-image: url("images/banners/main.jpg");
+}
+
+  /* サブメニューを初期状態で非表示 */
+  #mainNav .sub-menu {
+    display: none;
+  }
+
+  /* open クラスが付いたときに表示 */
+  #mainNav li.open > .sub-menu {
+    display: block;
+  }
+
+  #mainNav li.has-sub > a::after {
+  content: " ▼"; /* ▼マークを追加 */
+  font-size: 0.8em;
+  margin-left: 4px;
+  color: #333; /* お好みで色調整 */
+}
+
+/* ========================
+   リンク集ページスタイル
+   ======================== */
+.link-wrapper {
+  display: flex;
+  align-items: center;  /* バナーとテキストを縦中央揃え */
+  gap: 20px;            /* バナーと説明の間に余白 */
 }
 
 /* ========================
@@ -355,11 +413,6 @@ ul.footnav li {
     font-weight: normal;
   }
 
-  /* サブメニュー内にサブメニューがあっても▼はなし */
-  .sub-menu li:has(> .sub-menu) > a::after {
-    content: "";
-  }
-
   /* ホバー時にサブメニューを表示 */
   #mainNav .panel ul > li:hover > .sub-menu,
   .sub-menu li:hover > .sub-menu {
@@ -373,76 +426,20 @@ ul.footnav li {
   }
 }
 
-/* スマホメニュー全体 */
+/* スマホ用メニュー全体 */
 @media screen and (max-width: 768px) {
-  #mainNav .panel {
+  #mainNav .menu {
     position: fixed;
-    top: 0;
-    right: 0px; /* 初期は隠す */
-    width: 300px;
-    height: 100%;
-    background: #000;
-    z-index: 999;
-    padding: 60px 20px;
-    transition: right 0.3s ease;
-    overflow-y: auto;
-  }
-
-  #mainNav .panel.open {
-    right: 0;
-  }
-
-  #mainNav .panel ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  #mainNav .panel ul li {
-    border-bottom: 1px solid #333;
-  }
-
-  #mainNav .panel ul li a {
-    display: block;
-    padding: 15px 10px;
+    top: 10px;
+    right: 20px;
+    background-color: #444;
     color: #fff;
-    text-decoration: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    z-index: 1000;
+    border-radius: 4px;
+    user-select: none;
   }
-
-  /* サブメニューを持つ親liには.has-subクラスを付与済み */
-  #mainNav .panel ul > li.has-sub > ul.sub-menu {
-    display: none;
-    padding-left: 15px;
-    transition: all 0.3s ease;
-  }
-
-  #mainNav .panel ul > li.has-sub.open > ul.sub-menu {
-    display: block;
-  }
-
-  /* 矢印表示（開閉） */
-  #mainNav .panel ul > li.has-sub > a::after {
-    content: " ▼";
-    font-size: 0.8em;
-    color: #aaa;
-  }
-
-  #mainNav .panel ul > li.has-sub.open > a::after {
-    content: " ▲";
-  }
-}
-
-#mainNav .menu {
-  position: fixed;
-  top: 10px;
-  right: 20px;
-  background-color: #444;
-  color: #fff;
-  padding: 10px 15px;
-  cursor: pointer;
-  z-index: 1000;
-  border-radius: 4px;
-  user-select: none;
 }
 
 /* ========================
@@ -455,7 +452,6 @@ code {
   border-radius: 4px;          /* 角丸 */
   font-family: 'Source Code Pro', Consolas, Monaco, 'Courier New', monospace;
   font-size: 0.95em;           /* 少し小さめ */
-  white-space: nowrap;         /* 改行させない */
   user-select: text;           /* テキスト選択可能 */
 }
 

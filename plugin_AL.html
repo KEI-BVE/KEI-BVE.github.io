@@ -24,13 +24,6 @@
       <section id="post-250" class="content">
         <h3 class="heading">列車接近灯を作ろう</h3>
         <article class="post">
-          <font color="red">
-          <h4>現在工事中です</h4>
-          <p>
-          　このページは現在工事中です。<a href="https://sites.google.com/view/kei-techlabo/bveex/AL">旧HP</a>での閲覧をお願いいたします。
-          </p>
-          </font>
-          <!--
           <h4>①概要</h4>
           <p>
             　駅や線路脇に置いてあり、列車が接近すると点滅しだすアレです。おそらく保線作業員さんなどに列車の接近を伝えるためにあるのだと思います。
@@ -39,46 +32,284 @@
           <h4>②準備</h4>
           <p>
             　まず、ストラクチャを準備します。今回は<a href="https://fcs-rail.tech/">FCS鉄道工房様の色灯式信号 ver 2.1</a>を使用させていただきました。<br />
-            　次に、BveEXプラグイン用のプロジェクトを作ります。おーとまさんのHPやBveEXの解説本を読んでプロジェクトを作成し、Nugetからパッケージのインストールを済ませました。
+            　次に、BveEXプラグイン用のプロジェクトを作ります。<a href="https://www.okaoka-depot.com/">おーとまさんのホームページ</a>やBveEXの解説本を読んでプロジェクトを作成し、
+            Nugetからパッケージのインストールを済ませました。
           </p>
-          <h4>③コードを書く</h4>
-          <p>
-            ファイル・フォルダ類の準備ができたところで、早速プラグインを作っていきます。まず、
-            <code>using</code>句と<code>AssemblyPluginBase</code>から。
-            これで、BveEXに対してこのコードがBveEXプラグインであることを知らせることができます。
-          </p>
-          <div class="code-block">
-            <div class="code-header">
-              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-            </div><pre><code class="language-cs">using System;
-                                                 using System.Drawing;
 
-                                                using BveTypes.ClassWrappers;
+<h4>③コードを書く</h4>
+<p>
+  ファイル・フォルダ類の準備ができたところで、早速プラグインを作っていきます。まず、<code>using句</code>と<code>AssemblyPluginBase</code>から。
+  これで、BveEXに対してこのコードがBveEXプラグインであることを知らせることができます。
+</p>
 
-                                                using BveEx.PluginHost;
-                                                using BveEx.PluginHost.Plugins;
-                                                using Zbx1425.DXDynamicTexture;
+<div class="code-block">
+  <div class="code-header">
+    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+</div><pre><code class="language-cs">using System;
+using System.Drawing;
 
-                                                using System.IO;
-                                                using System.Reflection;
+using BveTypes.ClassWrappers;
 
-                                                namespace BveEx.Samples.MapPlugins.ApproachLamps
-                                                {
-                                                    [Plugin(PluginType.MapPlugin)]
-                                                    public class ApproachLamps : AssemblyPluginBase
-                                                    {
-                                                     ***
-                                                    }
-                                                }</code></pre></div>
-          <p>
-          執筆中…
-          </p>
-          </div>
-          <h4>④完成</h4>
-          <p>
-          執筆中…
-          </p>
-          -->
+using BveEx.PluginHost;
+using BveEx.PluginHost.Plugins;
+using Zbx1425.DXDynamicTexture;
+
+using System.IO;
+using System.Reflection;
+
+namespace BveEx.Samples.MapPlugins.ApproachLamps
+{
+    [Plugin(PluginType.MapPlugin)]
+    public class ApproachLamps : AssemblyPluginBase
+    {
+     ***
+    }
+}</code></pre></div>
+
+<p>
+　次に、<code>class</code>の中身を実装していきます。今回は画像の読み込みや点滅動作を行うので、以下の要素を上記コードの<code>***</code>の部分に加えます。
+以後特に注意のない限りは<code>public class ApproachLamps : AssemblyPluginBase{ }</code>の中を編集しているものとします。
+</p>
+
+<div class="code-block">
+  <div class="code-header">
+    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+</div><pre><code class="language-cs">namespace BveEx.Samples.MapPlugins.ApproachLamps
+{
+    [Plugin(PluginType.MapPlugin)]
+    public class ApproachLamps : AssemblyPluginBase
+    {
+        public ApproachLamps(PluginBuilder builder) : base(builder)
+        {
+        
+        }
+
+        public override void Dispose()
+        {
+
+        }
+
+        private void OnScenarioCreated(ScenarioCreatedEventArgs e)
+        {
+  
+        }
+
+        public override void Tick(TimeSpan elapsed)
+        {
+        
+        }
+    }
+}
+//※命名方法など一般的でない部分があるかもしれませんが大目に見てください…！
+</code></pre></div>
+
+<p>
+　型ができたらいよいよ自分でコードを書いていきます。まず、<code>private</code>関連と<code>public ApproachLamps(PluginBuilder builder) : base(builder){ }</code>から。
+</p>
+
+<div class="code-block">
+  <div class="code-header">
+    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+</div><pre><code class="language-cs">namespace BveEx.Samples.MapPlugins.ApproachLamps
+{
+    [Plugin(PluginType.MapPlugin)]
+    public class ApproachLamps : AssemblyPluginBase
+    {
+        public ApproachLamps(PluginBuilder builder) : base(builder)
+        {
+        
+        }
+
+        public override void Dispose()
+        {
+
+        }
+
+        private void OnScenarioCreated(ScenarioCreatedEventArgs e)
+        {
+            
+        }
+
+        public override void Tick(TimeSpan elapsed)
+        {
+        
+        }
+    }
+}
+//※命名方法など一般的でない部分があるかもしれませんが大目に見てください…！
+</code></pre></div>
+
+<p>
+　いろいろ検索しながら、見よう見まねで書きました。PIのdllが置かれる場所からの相対パスでファイルを指定します。これで、ストラクチャ類をPIから読み込むことができます。
+<code>OnScenarioCreated</code>を<code>Dispose</code>するのを忘れずに。イベントの購読というらしいです。<br>
+　この後はBVE内で点滅させる動作を作る工程に入ります。そもそも点滅をどうやって作るかですが、簡単に言うと「xファイル内のテクスチャを入れ替えする」です。
+よって、「PIからBVEのStructure Keyを取得すること」や「PIでテクスチャを入れ替えすること」ができれば作ることができます。まず、<code>OnScenarioCreated{ }</code>の中身から。
+</p>
+
+<div class="code-block">
+  <div class="code-header">
+    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+</div><pre><code class="language-cs">private void OnScenarioCreated(ScenarioCreatedEventArgs e)
+{
+    Model targetModel = e.Scenario.Map.StructureModels["sigib_on_led"];
+    TextureHandle1 = targetModel.Register("WhiteLED.png");
+    TextureHandle2 = targetModel.Register("FlareWhite.png");
+
+    GDIHelper1 = new GDIHelper(TextureHandle1.Width, TextureHandle1.Height);
+    GDIHelper2 = new GDIHelper(TextureHandle2.Width, TextureHandle2.Height);
+}
+</a>
+</code></pre></div>
+
+<p>
+　イベント<code>OnScenarioCreated</code>のタイミングでBVEのStructureリストから「sigib_on_led」を取得します。そのテクスチャである「WhiteLED.png」と「FlareWhite.png」を<code>TextureHandle</code>として置いておきます。
+また、ここら辺の仕組みはよく理解していないのですが、点滅動作は<code>DXDynamicTexture</code>を使用して行うため、<code>GDIHelper</code>として上で取得したテクスチャたちを置いておきます。
+もう一度言いますが、ここら辺の仕組みはよく理解していないので見よう見まねで<code>GDIHelper</code>を使っています。また、プログラミング素人にはどういう表現が正しいかわからないので、
+<code>変数</code>や<code>プロパティ</code>を「置く」という表現をしています。ご了承ください。<br>　ここまでできたら、ついに点滅動作です。点滅は常に動かしておきたいので、<code>Tick{ }</code>に記述します。
+</p>
+
+<div class="code-block">
+  <div class="code-header">
+    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+</div><pre><code class="language-cs">private TimeSpan Passedtime = TimeSpan.Zero;
+private bool isLighting = false;
+
+public override void Tick(TimeSpan elapsed)
+{
+    if (elapsed.TotalSeconds < 1)
+    {
+        Passedtime = Passedtime + elapsed;
+    }
+    if (Passedtime.TotalMilliseconds > 400)
+    {
+        Passedtime = Passedtime - TimeSpan.FromMilliseconds(400);
+        GDIHelper1.BeginGDI();
+        GDIHelper2.BeginGDI();
+        {
+            if (isLighting)
+            {
+                GDIHelper1.DrawImage(OffBitmap1, 0, 0);
+                GDIHelper2.DrawImage(OffBitmap2, 0, 0);
+                isLighting = false;
+            }
+            else
+            {
+                GDIHelper1.DrawImage(OnBitmap1, 0, 0);
+                GDIHelper2.DrawImage(OnBitmap2, 0, 0);
+                isLighting = true;
+            }
+        }
+        GDIHelper1.EndGDI();
+        TextureHandle1.Update(GDIHelper1);
+        GDIHelper2.EndGDI();
+        TextureHandle2.Update(GDIHelper2);
+    }
+    BveHacker.MainFormSource.Text = Passedtime.ToString();
+</code></pre></div>
+
+<p>
+　初心者には仕組みもプログラムもとても難しいですが、書いてみると何となく理解はできます。<code>bool型の</code>code>isLighting</code>を作っておき、<code>if(isLighting = true)</code>と
+<code>else(isLighting = false)</code>を繰り返して点滅動作を実行しています。</code>true</code>（点灯）なら</code>OffBitmap</code>で消灯し状態を<code>false</code>に、
+<code>false</code>（消灯）なら<code>OnBitmap</code>で点灯し状態を<code>true</code>に…という感じです。点滅の間隔は<code>TotalMilliseconds</code>と<code>FromMillisecondsで</code>変えられます。
+だいたい<code>400ms</code>くらいが私はちょうどよいと思いました。ここは路線や場所によって変えるとよいと思います。
+</p>
+
+<h4>④完成</h4>
+<p>
+　さて、これで完成です。ビルドして動作させてみましょう。これであなたの路線もピカピカです！！ピカピカというとキレイになったみたいですね。一応、私の完成形を置いておきます。
+</p>
+
+
+<div class="code-block">
+  <div class="code-header">
+    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+</div><pre><code class="language-cs">using System;
+using System.Drawing;
+using BveTypes.ClassWrappers;
+using BveEx.PluginHost;
+using BveEx.PluginHost.Plugins;
+using Zbx1425.DXDynamicTexture;
+using System.IO;
+using System.Reflection;
+
+namespace BveEx.Samples.MapPlugins.KeioAL
+{
+    [Plugin(PluginType.MapPlugin)]
+    public class ApproachLamps : AssemblyPluginBase
+    {
+        private TextureHandle TextureHandle1;
+        private GDIHelper GDIHelper1;
+        private Bitmap OnBitmap1;
+        private Bitmap OffBitmap1;
+        private TextureHandle TextureHandle2;
+        private GDIHelper GDIHelper2;
+        private Bitmap OnBitmap2;
+        private Bitmap OffBitmap2;
+
+        public ApproachLamps(PluginBuilder builder) : base(builder)
+        {
+            BveHacker.ScenarioCreated += OnScenarioCreated;
+            string baseDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+            OffBitmap1 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FCS_TM/SwitchSig/nowhite_LED.png"));
+            OnBitmap1 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FCS_TM/SwitchSig/WhiteLED.png"));
+            OffBitmap2 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FCS_TM/SwitchSig/noFlareWhite.png"));
+            OnBitmap2 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FCS_TM/SwitchSig/FlareWhite.png"));
+        }
+
+        public override void Dispose()
+        {
+            BveHacker.ScenarioCreated -= OnScenarioCreated;
+        }
+
+        private void OnScenarioCreated(ScenarioCreatedEventArgs e)
+        {
+            Model targetModel = e.Scenario.Map.StructureModels["sigib_on_led"];
+            TextureHandle1 = targetModel.Register("WhiteLED.png");
+            TextureHandle2 = targetModel.Register("FlareWhite.png");
+
+            GDIHelper1 = new GDIHelper(TextureHandle1.Width, TextureHandle1.Height);
+            GDIHelper2 = new GDIHelper(TextureHandle2.Width, TextureHandle2.Height);
+        }
+
+        private TimeSpan Passedtime = TimeSpan.Zero;
+        private bool isLighting = false;
+        public override void Tick(TimeSpan elapsed)
+        {
+            if (elapsed.TotalSeconds < 1)
+            {
+                Passedtime = Passedtime + elapsed;
+            }
+            if (Passedtime.TotalMilliseconds > 400)
+            {
+                Passedtime = Passedtime - TimeSpan.FromMilliseconds(400);
+                GDIHelper1.BeginGDI();
+                GDIHelper2.BeginGDI();
+                {
+                    if (isLighting)
+                    {
+                        GDIHelper1.DrawImage(OffBitmap1, 0, 0);
+                        GDIHelper2.DrawImage(OffBitmap2, 0, 0);
+                        isLighting = false;
+                    }
+                    else
+                    {
+                        GDIHelper1.DrawImage(OnBitmap1, 0, 0);
+                        GDIHelper2.DrawImage(OnBitmap2, 0, 0);
+                        isLighting = true;
+                    }
+                }
+                GDIHelper1.EndGDI();
+                TextureHandle1.Update(GDIHelper1);
+                GDIHelper2.EndGDI();
+                TextureHandle2.Update(GDIHelper2);
+            }
+            BveHacker.MainFormSource.Text = Passedtime.ToString();
+        }
+    }
+}
+</code></pre></div>
+
         </article>
       </section>
     </section>
