@@ -110,19 +110,35 @@ namespace BveEx.Samples.MapPlugins.ApproachLamps
 <div class="code-block">
   <div class="code-header">
     <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-</div><pre><code class="language-cs">namespace BveEx.Samples.MapPlugins.ApproachLamps
+</div><pre><code class="language-cs">namespace BveEx.Samples.MapPlugins.DXDynamicTextureTest
 {
     [Plugin(PluginType.MapPlugin)]
     public class ApproachLamps : AssemblyPluginBase
     {
+        private TextureHandle TextureHandle1;
+        private GDIHelper GDIHelper1;
+        private Bitmap OnBitmap1;
+        private Bitmap OffBitmap1;
+
+        private TextureHandle TextureHandle2;
+        private GDIHelper GDIHelper2;
+        private Bitmap OnBitmap2;
+        private Bitmap OffBitmap2;
+
         public ApproachLamps(PluginBuilder builder) : base(builder)
         {
-        
+            BveHacker.ScenarioCreated += OnScenarioCreated;
+            string baseDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+            OffBitmap1 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FCS_TM/SwitchSig/nowhite_LED.png"));
+            OnBitmap1 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FCS_TM/SwitchSig/WhiteLED.png"));
+            OffBitmap2 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FCS_TM/SwitchSig/noFlareWhite.png"));
+            OnBitmap2 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FCS_TM/SwitchSig/FlareWhite.png"));
         }
 
         public override void Dispose()
         {
-
+            BveHacker.ScenarioCreated -= OnScenarioCreated;
         }
 
         private void OnScenarioCreated(ScenarioCreatedEventArgs e)
@@ -136,7 +152,6 @@ namespace BveEx.Samples.MapPlugins.ApproachLamps
         }
     }
 }
-//※命名方法など一般的でない部分があるかもしれませんが大目に見てください…！
 </code></pre></div>
 
 <p>
