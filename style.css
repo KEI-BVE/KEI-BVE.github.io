@@ -24,6 +24,13 @@ h3 {
   background-image: url("images/banners/main.jpg");
 }
 
+/* 本文横幅設定 */
+.content {
+  max-width: 1350px; /* 必要に応じて調整 */
+  margin: 0 auto;
+  padding: 0 1em;
+}
+
 /* ========================
    ナビゲーションメニュー（共通）
    ======================== */
