@@ -12,48 +12,180 @@ body {
   color: #333;
 }
 
-/* スマホ等の小画面でパディング調整 */
+/* h3見出しの下線スタイル */
+h3 {
+  border-bottom: 2px solid #333;
+  padding-bottom: 4px;
+  margin-bottom: 16px;
+}
+
+/* ヘッダー画像設定 */
+#header {
+  background-image: url("images/banners/main.jpg");
+}
+
+/* ========================
+   ナビゲーションメニュー（共通）
+   ======================== */
+#mainNav {
+  background-color: #333;
+}
+
+#mainNav .inner {
+  display: flex;
+  flex-direction: column;
+}
+
+#mainNav .menu {
+  background-color: #444;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+
+/* サブメニュー共通非表示 */
+#mainNav .sub-menu {
+  display: none;
+}
+
+/* openクラスが付いたときに表示 */
+#mainNav li.open > .sub-menu {
+  display: block;
+}
+
+/* サブメニューを持つリンクに▼を追加 */
+#mainNav li.has-sub > a::after {
+  content: " ▼";
+  font-size: 0.8em;
+  margin-left: 4px;
+  color: #333;
+}
+
+/* ========================
+   PC表示用スタイル（769px以上）
+   ======================== */
+@media screen and (min-width: 769px) {
+  #mainNav .menu {
+    display: none;
+  }
+
+  #mainNav .panel {
+    display: block !important;
+    text-align: center;
+  }
+
+  #mainNav .panel ul {
+    display: inline-flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  #mainNav .panel ul > li {
+    position: relative;
+    margin: 0 15px;
+  }
+
+  #mainNav .panel ul > li > a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: inline-block;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  #mainNav .panel ul > li:has(> .sub-menu) > a::after {
+    content: " ▼";
+    font-size: 0.8em;
+  }
+
+  .sub-menu {
+    display: none !important;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #444;
+    padding: 10px 0;
+    min-width: 200px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    z-index: 999;
+  }
+
+  .sub-menu li {
+    margin: 0;
+    position: relative;
+  }
+
+  .sub-menu li a {
+    color: #fff;
+    padding: 8px 15px;
+    display: block;
+    text-decoration: none;
+    font-weight: normal;
+  }
+
+  #mainNav .panel ul > li:hover > .sub-menu,
+  .sub-menu li:hover > .sub-menu {
+    display: block !important;
+  }
+
+  #mainNav .panel ul > li > a:hover,
+  .sub-menu li > a:hover {
+    background-color: #555;
+  }
+}
+
+/* ========================
+   スマホ表示用スタイル（768px以下）
+   ======================== */
 @media screen and (max-width: 768px) {
   body, .gridWrapper {
     padding: 0 10px;
   }
 
-  /* グリッドは1カラムにして幅を広げる */
+  body {
+    font-size: 14px;
+  }
+
   .gridWrapper {
     grid-template-columns: 1fr !important;
     gap: 15px;
   }
 
-  /* フォントサイズを少し小さめに */
-  body {
-    font-size: 14px;
-  }
-
-  /* ヘッダーロゴのサイズ調整 */
   #header .logo a {
     font-size: 24px;
     padding-left: 10px;
   }
+
   #header .logo span {
     font-size: 16px;
     padding-left: 10px;
   }
 
-  /* ナビゲーションのメニューを縦並びに */
   #mainNav .inner {
     flex-direction: column;
   }
 
-  /* メニュー表示の切り替えボタンを表示 */
   #mainNav .menu {
+    position: fixed;
+    top: 10px;
+    right: 20px;
+    background-color: #444;
+    color: #fff;
+    padding: 10px 15px;
+    cursor: pointer;
+    z-index: 1000;
+    border-radius: 4px;
+    user-select: none;
     display: block;
   }
 
-  /* メニューのパネルを固定表示 */
   #mainNav .panel {
     position: fixed;
     top: 0;
-    right: 0px; /* 初期は隠す */
+    right: 0px;
     width: 300px;
     height: 100%;
     background: #000;
@@ -84,23 +216,10 @@ body {
     text-decoration: none;
   }
 
-  /* サブメニューを持つ親liには.has-subクラスを付与済み */
-  #mainNav .panel ul > li.has-sub > ul.sub-menu {
-    display: none;
-    padding-left: 15px;
-    transition: all 0.3s ease;
-  }
-
-  #mainNav .panel ul > li.has-sub.open > ul.sub-menu {
-    display: block;
-  }
-
-  /* 親メニューのリンクにpositionをつける（矢印表示のため） */
   #mainNav .panel ul > li.has-sub > a {
     position: relative;
   }
 
-  /* 矢印表示（開閉） */
   #mainNav .panel ul > li.has-sub > a::after {
     content: " ▼";
     font-size: 0.8em;
@@ -112,35 +231,29 @@ body {
   #mainNav .panel ul > li.has-sub.open > a::after {
     content: " ▲";
   }
-}
 
-/* h3の下線スタイル追加 */
-h3 {
-  border-bottom: 2px solid #333;
-  padding-bottom: 4px;
-  margin-bottom: 16px;
-}
-
-#header {
-  background-image: url("images/banners/main.jpg");
-}
-
-  /* サブメニューを初期状態で非表示 */
-  #mainNav .sub-menu {
+  #mainNav .panel ul > li.has-sub > ul.sub-menu {
     display: none;
+    padding-left: 15px;
+    transition: all 0.3s ease;
   }
 
-  /* open クラスが付いたときに表示 */
-  #mainNav li.open > .sub-menu {
+  #mainNav .panel ul > li.has-sub.open > ul.sub-menu {
     display: block;
   }
-
-  #mainNav li.has-sub > a::after {
-  content: " ▼"; /* ▼マークを追加 */
-  font-size: 0.8em;
-  margin-left: 4px;
-  color: #333; /* お好みで色調整 */
 }
+
+  .panel {
+  display: none;
+  }
+
+  .open {
+  display: block;
+  }
+
+  .menu {
+  cursor: pointer;
+  }
 
 /* ========================
    リンク集ページスタイル
@@ -218,7 +331,7 @@ h3 {
   color: #fff;
   text-decoration: none;
   padding-left: 20px;
-  font-size: 30px;
+  font-size: 35px;
 }
 
 #header .logo span {
@@ -320,126 +433,6 @@ ul.footnav li {
   left: 0;
   width: 100%;
   height: 100%;
-}
-
-/* ========================
-   ナビゲーションメニュー
-   ======================== */
-#mainNav {
-  background-color: #333;
-}
-
-#mainNav .inner {
-  display: flex;
-  flex-direction: column;
-}
-
-#mainNav .menu {
-  background-color: #444;
-  color: #fff;
-  padding: 10px;
-  text-align: center;
-  cursor: pointer;
-}
-
-/* PC表示のスタイル */
-@media screen and (min-width: 769px) {
-  /* MENUボタンは非表示 */
-  #mainNav .menu {
-    display: none;
-  }
-
-  /* メニュー本体を常に表示し、中央寄せ */
-  #mainNav .panel {
-    display: block !important;
-    text-align: center;
-  }
-
-  /* メニューリストを横並びで中央に */
-  #mainNav .panel ul {
-    display: inline-flex;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  /* メニューリストの項目 */
-  #mainNav .panel ul > li {
-    position: relative;
-    margin: 0 15px;
-  }
-
-  /* メニューリンク */
-  #mainNav .panel ul > li > a {
-    color: #fff;
-    text-decoration: none;
-    padding: 10px 15px;
-    display: inline-block;
-    font-weight: bold;
-    cursor: pointer;
-  }
-
-  /* サブメニューを持つ親メニューにだけ▼を付ける */
-  #mainNav .panel ul > li:has(> .sub-menu) > a::after {
-    content: " ▼";
-    font-size: 0.8em;
-  }
-
-  /* サブメニューの初期状態は非表示 */
-  .sub-menu {
-    display: none !important;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #444;
-    padding: 10px 0;
-    min-width: 200px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-    z-index: 999;
-  }
-
-  /* サブメニュー内リスト */
-  .sub-menu li {
-    margin: 0;
-    position: relative;
-  }
-
-  /* サブメニューリンク */
-  .sub-menu li a {
-    color: #fff;
-    padding: 8px 15px;
-    display: block;
-    text-decoration: none;
-    font-weight: normal;
-  }
-
-  /* ホバー時にサブメニューを表示 */
-  #mainNav .panel ul > li:hover > .sub-menu,
-  .sub-menu li:hover > .sub-menu {
-    display: block !important;
-  }
-
-  /* ホバー時の背景色変化 */
-  #mainNav .panel ul > li > a:hover,
-  .sub-menu li > a:hover {
-    background-color: #555;
-  }
-}
-
-/* スマホ用メニュー全体 */
-@media screen and (max-width: 768px) {
-  #mainNav .menu {
-    position: fixed;
-    top: 10px;
-    right: 20px;
-    background-color: #444;
-    color: #fff;
-    padding: 10px 15px;
-    cursor: pointer;
-    z-index: 1000;
-    border-radius: 4px;
-    user-select: none;
-  }
 }
 
 /* ========================

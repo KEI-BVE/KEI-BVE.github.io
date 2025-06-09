@@ -53,66 +53,76 @@
   const menuBtn = document.querySelector("#mainNav .menu");
   const navPanel = document.querySelector("#mainNav .panel");
 
-  if (menuBtn && navPanel) {
-    // メニュー開閉
-    menuBtn.addEventListener("click", () => {
-      navPanel.classList.toggle("open");
-    });
+  if (!menuBtn || !navPanel) return;
 
-    // メニュー外クリックで閉じる
-    document.addEventListener("click", (e) => {
-      const isClickInside = navPanel.contains(e.target) || menuBtn.contains(e.target);
-      if (!isClickInside) {
-        navPanel.classList.remove("open");
-      }
-    });
-  }
+  // メニュー開閉トグル
+  menuBtn.addEventListener("click", () => {
+    navPanel.classList.toggle("open");
+  });
 
-  // サブメニューを持つliにクラス付与
+  // メニュー外クリックでメニュー閉じる
+  document.addEventListener("click", (e) => {
+    const isClickInside = navPanel.contains(e.target) || menuBtn.contains(e.target);
+    if (!isClickInside) {
+      navPanel.classList.remove("open");
+      // サブメニューも全部閉じる
+      navPanel.querySelectorAll("li.has-sub.open").forEach(li => li.classList.remove("open"));
+    }
+  });
+
+  // サブメニュー持ちのliにクラス付与
   document.querySelectorAll("#mainNav .panel ul > li").forEach(li => {
     if (li.querySelector(".sub-menu")) {
       li.classList.add("has-sub");
     }
   });
 
+  // サブメニュー開閉のセットアップ
   function setupSubMenuToggle() {
-    // 既存のイベントを一旦解除するため、クローンに置換（リセット）
+    // まず既存のリンクイベントリセットのためにクローンで置換
     document.querySelectorAll("#mainNav .panel ul > li.has-sub > a").forEach(link => {
       const newLink = link.cloneNode(true);
       link.parentNode.replaceChild(newLink, link);
     });
 
     if (window.matchMedia("(max-width: 768px)").matches) {
+      // サブメニュー親リンクにクリックイベント付与
       document.querySelectorAll("#mainNav .panel ul > li.has-sub > a").forEach(link => {
         link.addEventListener("click", (e) => {
-          e.preventDefault();
-          // e.stopPropagation() は外しました
+          e.preventDefault(); // ページ遷移させない
 
           const parentLi = link.parentElement;
 
-          // 他の開いているサブメニューを閉じる
-          document.querySelectorAll("#mainNav .panel ul > li.has-sub.open").forEach(openLi => {
-            if (openLi !== parentLi) {
-              openLi.classList.remove("open");
-            }
+          // 他のサブメニューは閉じる
+          navPanel.querySelectorAll("li.has-sub.open").forEach(openLi => {
+            if (openLi !== parentLi) openLi.classList.remove("open");
           });
 
+          // 自分のサブメニュー開閉切替
           parentLi.classList.toggle("open");
         });
       });
 
-      // メニュー内リンククリックでメニュー閉じる
+      // サブメニューを持たないリンクはクリックでメニュー閉じる
       navPanel.querySelectorAll("a").forEach(link => {
-        link.addEventListener("click", () => {
-          navPanel.classList.remove("open");
-        });
+        const parentLi = link.closest("li");
+        if (!parentLi.classList.contains("has-sub")) {
+          link.addEventListener("click", () => {
+            navPanel.classList.remove("open");
+            // ついでにサブメニューも閉じる
+            navPanel.querySelectorAll("li.has-sub.open").forEach(li => li.classList.remove("open"));
+          });
+        }
       });
+    } else {
+      // PCサイズ以上はサブメニューはhoverで開く想定なのでopenクラスリセット
+      navPanel.querySelectorAll("li.has-sub.open").forEach(li => li.classList.remove("open"));
     }
   }
 
   setupSubMenuToggle();
 
-  // リサイズ時にも再セットアップ
+  // リサイズ時に再セットアップ
   window.addEventListener("resize", setupSubMenuToggle);
 });
 </script>
