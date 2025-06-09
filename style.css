@@ -451,7 +451,7 @@ code {
   padding: 0.2em 0.4em;        /* 少し内側余白 */
   border-radius: 4px;          /* 角丸 */
   font-family: 'Source Code Pro', Consolas, Monaco, 'Courier New', monospace;
-  font-size: 0.95em;           /* 少し小さめ */
+  font-size: 0.8em;           /* 少し小さめ */
   user-select: text;           /* テキスト選択可能 */
 }
 
@@ -464,7 +464,7 @@ code {
   color: #ccc;
   border-radius: 6px;
   font-family: "Fira Code", monospace;
-  font-size: 14px;
+  font-size: 12px;
   overflow-x: auto;
   word-break: break-word;
 }
@@ -493,7 +493,7 @@ code {
 
 /* Highlight.js 行番号部分の調整 */
 .hljs-ln-numbers {
-  width: 1em;        /* 行番号の幅は固定 */
+  width: 3.5em;        /* 行番号の幅は固定 */
   text-align: right;   /* 右揃えで数字を詰める */
   user-select: none;
   color: #888;
@@ -505,7 +505,7 @@ code {
 
 .hljs-ln-numbers > div {
   line-height: 1.5em;
-  font-size: 14px;
+  font-size: 12px;
   font-family: monospace;
 
   padding-right: 1em;  /* ← ここで「数字の右」に余白を追加 */

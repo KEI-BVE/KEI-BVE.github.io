@@ -28,50 +28,1089 @@
 			<section id="post-250" class="content">
 				<h3 class="heading">FD表示灯を作ろう</h3>
 				<article class="post">
-    			    <font color="red">
-          			<h4>現在工事中です</h4>
-     			    <p>
-     			     　このページは現在工事中です。<a href="https://sites.google.com/view/kei-techlabo/bveex/FD">旧HP</a>での閲覧をお願いいたします。
-    		      	</p>
-  			        </font>
-   					<!--
 					<h4>①概要</h4>
 						<p>
-							　京王電鉄ではFD（ホームドア）設置駅に定位置停止確認灯・開閉表示灯・パトランプが併せて設置されています。
-							私はこれを通称「FD表示灯」と呼んでいます。今回はこのFD表示灯をBveEXを使用してBveで再現していきたいと思います。
+						　京王電鉄ではFD（ホームドア）設置駅に定位置停止確認灯・開閉表示灯・パトランプが併せて設置されています。
+						私はこれを通称「FD表示灯」と呼んでいます。今回はこのFD表示灯をBveEXを使用してBveで再現していきたいと思います。
 						</p>
 					<h4>②準備</h4>
 						<p>
-							　まず、ストラクチャを準備します。今回は自作のストラクチャを使用しました。<br>
-							　次に、BveEXプラグイン用のプロジェクトを作ります。おーとまさんのHPやBveEXの解説本を読んでプロジェクトを作成し、Nugetからパッケージのインストールを済ませました。
+						　まず、ストラクチャを準備します。今回は自作のストラクチャを使用しました。<br>次に、BveEXプラグイン用のプロジェクトを作ります。
+						<a href="https://www.okaoka-depot.com/">おーとまさんのホームページ</a>ややBveEXの解説本を読んでプロジェクトを作成し、Nugetからパッケージのインストールを済ませました。
 						</p>
 
 <h4>③コードを書く</h4>
 <p>
-　文章はここ
+　ファイル・フォルダ類の準備ができたところで、早速プラグインを作っていきます。まず、<code>using句</code>と
+<code>AssemblyPluginBase</code>・<code>class</code>の中身等は前回の「列車接近灯を作ろう」で紹介したので省きます。
 </p>
 
 <div class="code-block">
 	<div class="code-header">
 		<button class="copy-btn" onclick="copyCode(this)">Copy</button>
-</div><pre><code class="language-cs">codeはここ</a></code></pre></div>
+</div><pre><code class="language-cs">using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+
+using BveTypes.ClassWrappers;
+
+using BveEx.PluginHost;
+using BveEx.PluginHost.Plugins;
+using Zbx1425.DXDynamicTexture;
+
+using System.IO;
+using System.Reflection;
+using System.Xml.Linq;
+using System.Threading;
+using static System.Collections.Specialized.BitVector32;
+using System.Drawing.Text;
+using System.Diagnostics.Eventing.Reader;
+using BveEx.Extensions.Native;
+
+namespace BveEx.Samples.MapPlugins.FormDoorLamps
+{
+    [Plugin(PluginType.MapPlugin)]
+    public class FormDoorLamps : AssemblyPluginBase
+    {
+        public FormDoorLamps(PluginBuilder builder) : base(builder)
+        {
+        
+        }
+
+        public override void Dispose()
+        {
+
+        }
+
+        private void OnScenarioCreated(ScenarioCreatedEventArgs e)
+        {
+            
+        }
+
+        public override void Tick(TimeSpan elapsed)
+        {
+        
+        }
+    }
+}
+//※命名方法など一般的でない部分があるかもしれませんが大目に見てください…！
+</a></code></pre></div>
 
 <p>
-　文章はここ
+　以後特に注意のない限りは<code>public class FormDoorLamps : AssemblyPluginBase{ }</code>の中を編集しているものとします。型ができたらいよいよでコードを書いていきます。
+まず、<code>private関連と<code>public FormDoorLamps(PluginBuilder builder) : base(builder){ }</code>、<code>OnScenarioCreated{ }</code>から。
+今回も<code>DXDT</code>と</code>GDIHelper</code>を使用するためこの項目がかなり多いです。また、ストラクチャを4種類用意したため、既に多いところにさらに×4した分だけ行数が増えることになります。
 </p>
+
+<div class="code-block">
+	<div class="code-header">
+		<button class="copy-btn" onclick="copyCode(this)">Copy</button>
+</div><pre><code class="language-cs">namespace BveEx.Samples.MapPlugins.FormDoorLamps
+    {
+        [PluginAttribute(PluginType.MapPlugin)]
+        public class FormDoorLamps : AssemblyPluginBase
+        {
+            private TextureHandle TextureHandle1;
+            private TextureHandle TextureHandle2;
+            private GDIHelper GDIHelper1;
+            private GDIHelper GDIHelper2;
+            private Bitmap OnBitmap1;
+            private Bitmap OffBitmap1;
+            private Bitmap OnBitmap2;
+            private Bitmap OffBitmap2;
+            private Bitmap OffBitmap3;
+    
+            private TextureHandle TextureHandle3;
+            private TextureHandle TextureHandle4;
+            private GDIHelper GDIHelper3;
+            private GDIHelper GDIHelper4;
+            private Bitmap OnBitmap4;
+            private Bitmap OffBitmap4;
+            private Bitmap OnBitmap5;
+            private Bitmap OffBitmap5;
+            private Bitmap OffBitmap6;
+    
+            private TextureHandle TextureHandle5;
+            private TextureHandle TextureHandle6;
+            private GDIHelper GDIHelper5;
+            private GDIHelper GDIHelper6;
+            private Bitmap OnBitmap7;
+            private Bitmap OffBitmap7;
+            private Bitmap OnBitmap8;
+            private Bitmap OffBitmap8;
+            private Bitmap OffBitmap9;
+    
+            private TextureHandle TextureHandle7;
+            private TextureHandle TextureHandle8;
+            private GDIHelper GDIHelper7;
+            private GDIHelper GDIHelper8;
+            private Bitmap OnBitmap10;
+            private Bitmap OffBitmap10;
+            private Bitmap OnBitmap11;
+            private Bitmap OffBitmap11;
+            private Bitmap OffBitmap12;
+
+            private Bitmap ShinjukuBitmap;
+
+            public FormDoorLamps(PluginBuilder builder) : base(builder)
+            {
+                BveHacker.ScenarioCreated += OnScenarioCreated;
+                string baseDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                OffBitmap1 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/FD_1G.png"));
+                OnBitmap1 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/FD_1F.png"));
+                OffBitmap2 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/pato.png"));
+                OnBitmap2 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/pato_on.png"));
+                OffBitmap3 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/FD_1C.png"));
+    
+                OffBitmap4 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/FD_2G.png"));
+                OnBitmap4 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/FD_2F.png"));
+                OffBitmap5 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/pato_on.png"));
+                OnBitmap5 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/pato.png"));
+                OffBitmap6 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/FD_2C.png"));
+    
+                OffBitmap7 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/FD_2G.png"));
+                OnBitmap7 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/FD_2F.png"));
+                OffBitmap8 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/pato10_on.png"));
+                OnBitmap8 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/pato10.png"));
+                OffBitmap9 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/FD_2C.png"));
+    
+                OffBitmap10 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/FD_2G.png"));
+                OnBitmap10 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/FD_2F.png"));
+                OffBitmap11 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/pato_on.png"));
+                OnBitmap11 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/pato5.png"));
+                OffBitmap12 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/FD_2C.png"));
+    
+                ShinjukuBitmap = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/FD_2.png"));
+            }
+    
+            public override void Dispose()
+            {
+                BveHacker.ScenarioCreated -= OnScenarioCreated;
+            }
+            private void OnScenarioCreated(ScenarioCreatedEventArgs e)
+            {
+                Model targetModel1 = e.Scenario.Map.StructureModels["fd_1"];
+                TextureHandle1 = targetModel1.Register("FD_1F.png");
+                Model targetModel2 = e.Scenario.Map.StructureModels["fd_1"];
+                TextureHandle2 = targetModel2.Register("pato.png");
+                GDIHelper1 = new GDIHelper(TextureHandle1.Width, TextureHandle1.Height);
+                GDIHelper2 = new GDIHelper(TextureHandle2.Width, TextureHandle2.Height);
+    
+                Model targetModel3 = e.Scenario.Map.StructureModels["fd_2"];
+                TextureHandle3 = targetModel3.Register("FD_2F.png");
+                Model targetModel4 = e.Scenario.Map.StructureModels["fd_2"];
+                TextureHandle4 = targetModel4.Register("pato.png");
+                GDIHelper3 = new GDIHelper(TextureHandle3.Width, TextureHandle3.Height);
+                GDIHelper4 = new GDIHelper(TextureHandle4.Width, TextureHandle4.Height);
+    
+                Model targetModel5 = e.Scenario.Map.StructureModels["fd_3"];
+                TextureHandle5 = targetModel5.Register("FD_2F.png");
+                Model targetModel6 = e.Scenario.Map.StructureModels["fd_3"];
+                TextureHandle6 = targetModel6.Register("pato10.png");
+                GDIHelper5 = new GDIHelper(TextureHandle5.Width, TextureHandle5.Height);
+                GDIHelper6 = new GDIHelper(TextureHandle6.Width, TextureHandle6.Height);
+    
+                Model targetModel7 = e.Scenario.Map.StructureModels["fd_4"];
+                TextureHandle7 = targetModel7.Register("FD_2F.png");
+                Model targetModel8 = e.Scenario.Map.StructureModels["fd_4"];
+                TextureHandle8 = targetModel8.Register("pato5.png");
+                GDIHelper7 = new GDIHelper(TextureHandle7.Width, TextureHandle7.Height);
+                GDIHelper8 = new GDIHelper(TextureHandle8.Width, TextureHandle8.Height);
+
+            }
+    
+            public override void Tick(TimeSpan elapsed)
+            {
+
+            }   
+        }
+    }
+</a></code></pre></div>
+
+<p>
+　この部分は前回と同様に書いていきました。PIのdllが置かれる場所からの相対パスでファイルを指定します。これで、ストラクチャ類をPIから読み込むことができます。
+<code>OnScenarioCreated</code>を<code>Dispose</code>するのを忘れずに。イベントの購読です。<br>
+　このようにコードを書けばおそらくわかるかと思いますが、今回の自作ストラクチャの構成は以下のようになっています。
+</p>
+
+<center><img src="images/BveEX/1.png" width="1000"></center>
+
+<p>
+　上の図でわかりますでしょうか。FD_n.xというストラクチャにFD_nという<code>Strucrture Key</code>をつけ、その内部のテクスチャpato.pngとFD_nF.pngをpato_on.png類やFD_nG.png、
+FD_nC.pngにDXDT・GDIHelperを用いて入れ替えるという訳です。また、<code>ShinjukuBitmap</code>という<code>Bitmap"数字"</code>に準じていないBitmapがありますが、これについては後述します。<br>
+　この後はBVE内で点滅させる動作を作る工程に入ります。今回はただずっと点滅させればよいというわけにはいきません。具体的に動作は5種類です。特に、新宿では開閉表示灯が点灯しません。ここの再現はかなりくせ者です…
+</p>
+
+<center><img src="images/BveEX/2.gif" width="1000"></center>
+
+<p>
+　一応、フローチャートにしてみました。新宿に関して、条件の分け方がかなり煩雑になってしまったのですが、これが一番作りやすくわかりやすいと感じたのでこの分け方で作っていきます。
+<font color="gray">（新宿だけ動作が違うことに気づかなくてあとから付け足したなんて言えません。<b>ShinjukuBitmap</b>があることもこれが原因です。FD_2.pngというのは無表示のテクスチャです。）</font>
+また、分け方からわかるようにこれには注意が必要で、「新宿の距離程（BVE本体の<code>Station.Put</code>構文）が0～300mの範囲にあること」と「新宿がStationリストで一番はじめにある駅であること」が動作条件となります。
+本当は新宿だけ動作をきれいにIf文で分けたり、停通判定を速度ではなくリストから取得したりしたかったのですが、まだ素人なのでのちの改善点としたいと思います。
+さらにパトランプの点滅の仕方が駅によって異なるのですが、点滅の仕方を分けることが素人にはかなり難しいので、この点に関しても改善点としたいと思います。<br>
+　さて、If文の使いどころも整理できたことですし、<code>public override void Tick(TimeSpan elapsed) { }</code>の中身を書いていきます。
+前置きの部分（前述のコード）から書くと長くなってしまうので、以降はこの中身を記述しているものとします。</p>
+
+<div class="code-block">
+	<div class="code-header">
+		<button class="copy-btn" onclick="copyCode(this)">Copy</button>
+</div><pre><code class="language-cs">public override void Tick(TimeSpan elapsed)
+ {
+     //現在情報取得
+     double location = BveHacker.Scenario.VehicleLocation.Location;
+     int currentStationIndex = BveHacker.Scenario.Map.Stations.CurrentIndex;
+     DoorSet doorSet = BveHacker.Scenario.Vehicle.Doors;
+
+     //nextSta
+     Station nSta = BveHacker.Scenario.Map.Stations[currentStationIndex + 1] as Station;
+     double nStaLocation = nSta.Location;
+     double nStopMax = nSta.MaxStopPosition;
+     double nStopMin = nSta.MinStopPosition;
+
+     //停通判定
+     INative speed = Extensions.GetExtension();
+     double NowSpeed = speed.VehicleState.Speed;
+
+     //新宿停車中
+     if (currentStationIndex == -1)
+     {
+         if (!doorSet.AreAllClosed)
+         {
+             //□ﾊﾟﾄﾗﾝﾌﾟ
+             GDIHelper3.BeginGDI();
+             GDIHelper3.DrawImage(ShinjukuBitmap, 0, 0);
+             GDIHelper3.EndGDI();
+             TextureHandle3.Update(GDIHelper3);
+
+             GDIHelper5.BeginGDI();
+             GDIHelper5.DrawImage(ShinjukuBitmap, 0, 0);
+             GDIHelper5.EndGDI();
+             TextureHandle5.Update(GDIHelper5);
+
+             if (elapsed.TotalSeconds < 1)
+             {
+                 Passedtime = Passedtime + elapsed;
+             }
+             if (Passedtime.TotalMilliseconds > 600)
+             {
+                 Passedtime = Passedtime - TimeSpan.FromMilliseconds(600);
+                 GDIHelper2.BeginGDI();
+                 GDIHelper4.BeginGDI();
+                 GDIHelper6.BeginGDI();
+                 GDIHelper8.BeginGDI();
+                 {
+                     if (isLighting)
+                     {
+                         GDIHelper2.DrawImage(OnBitmap2, 0, 0);
+                         GDIHelper4.DrawImage(OnBitmap5, 0, 0);
+                         GDIHelper6.DrawImage(OnBitmap8, 0, 0);
+                         GDIHelper8.DrawImage(OnBitmap11, 0, 0);
+                         isLighting = false;
+                     }
+                     else
+                     {
+                         GDIHelper2.DrawImage(OffBitmap2, 0, 0);
+                         GDIHelper4.DrawImage(OffBitmap5, 0, 0);
+                         GDIHelper6.DrawImage(OffBitmap8, 0, 0);
+                         GDIHelper8.DrawImage(OffBitmap11, 0, 0);
+                         isLighting = true;
+                     }
+                 }
+                 GDIHelper2.EndGDI();
+                 GDIHelper4.EndGDI();
+                 GDIHelper6.EndGDI();
+                 GDIHelper8.EndGDI();
+                 TextureHandle2.Update(GDIHelper2);
+                 TextureHandle4.Update(GDIHelper4);
+                 TextureHandle6.Update(GDIHelper6);
+                 TextureHandle8.Update(GDIHelper8);
+             }
+             BveHacker.MainFormSource.Text = Passedtime.ToString();
+         }
+     }
+     //新宿以外
+     if (currentStationIndex >= 0)
+     {
+         //previousSta
+         Station pSta = BveHacker.Scenario.Map.Stations[currentStationIndex] as Station;
+         double pStaLocation = pSta.Location;
+         double pStopMax = pSta.MaxStopPosition;
+         double pStopMin = pSta.MinStopPosition;
+
+         //ドア閉
+         if (doorSet.AreAllClosed)
+         {
+             //定位置
+             if (nStopMin < location && location < nStopMax || pStopMin < location && location < pStopMax)
+             {
+                 if (0 < location && location < 300)//新宿用
+                 {
+                     //■のみ点灯（新宿用）
+                     GDIHelper3.BeginGDI();
+                     GDIHelper3.DrawImage(OffBitmap4, 0, 0);
+                     GDIHelper3.EndGDI();
+                     TextureHandle3.Update(GDIHelper3);
+
+                     GDIHelper5.BeginGDI();
+                     GDIHelper5.DrawImage(OffBitmap7, 0, 0);
+                     GDIHelper5.EndGDI();
+                     TextureHandle5.Update(GDIHelper5);
+                 }
+                 else
+                 {
+                     //●■点灯
+                     GDIHelper1.BeginGDI();
+                     GDIHelper1.DrawImage(OnBitmap1, 0, 0);
+                     GDIHelper1.EndGDI();
+                     TextureHandle1.Update(GDIHelper1);
+
+                     GDIHelper3.BeginGDI();
+                     GDIHelper3.DrawImage(OnBitmap4, 0, 0);
+                     GDIHelper3.EndGDI();
+                     TextureHandle3.Update(GDIHelper3);
+
+                     GDIHelper5.BeginGDI();
+                     GDIHelper5.DrawImage(OnBitmap7, 0, 0);
+                     GDIHelper5.EndGDI();
+                     TextureHandle5.Update(GDIHelper5);
+
+                     GDIHelper7.BeginGDI();
+                     GDIHelper7.DrawImage(OnBitmap10, 0, 0);
+                     GDIHelper7.EndGDI();
+                     TextureHandle7.Update(GDIHelper7);
+                 }
+             }
+             //通常時の動作
+             else
+             {
+                 if (0 < location && location < 300)
+                 {
+                     //■のみ点灯（新宿用）
+                     GDIHelper3.BeginGDI();
+                     GDIHelper3.DrawImage(OffBitmap4, 0, 0);
+                     GDIHelper3.EndGDI();
+                     TextureHandle3.Update(GDIHelper3);
+
+                     GDIHelper5.BeginGDI();
+                     GDIHelper5.DrawImage(OffBitmap7, 0, 0);
+                     GDIHelper5.EndGDI();
+                     TextureHandle5.Update(GDIHelper5);
+                 }
+                 else
+                 {
+                     //通過
+                     if (NowSpeed > 45)
+                     {
+                         //●消灯
+                         GDIHelper1.BeginGDI();
+                         GDIHelper3.BeginGDI();
+                         GDIHelper5.BeginGDI();
+                         GDIHelper7.BeginGDI();
+
+                         GDIHelper1.DrawImage(OffBitmap1, 0, 0);
+                         GDIHelper3.DrawImage(OffBitmap4, 0, 0);
+                         GDIHelper5.DrawImage(OffBitmap7, 0, 0);
+                         GDIHelper7.DrawImage(OffBitmap10, 0, 0);
+
+                         GDIHelper1.EndGDI();
+                         GDIHelper3.EndGDI();
+                         GDIHelper5.EndGDI();
+                         GDIHelper7.EndGDI();
+
+                         TextureHandle1.Update(GDIHelper1);
+                         TextureHandle3.Update(GDIHelper3);
+                         TextureHandle5.Update(GDIHelper5);
+                         TextureHandle7.Update(GDIHelper7);
+
+                         //パトランプ消灯
+                         GDIHelper2.BeginGDI();
+                         GDIHelper4.BeginGDI();
+                         GDIHelper6.BeginGDI();
+                         GDIHelper8.BeginGDI();
+
+                         GDIHelper2.DrawImage(OnBitmap2, 0, 0);
+                         GDIHelper4.DrawImage(OnBitmap5, 0, 0);
+                         GDIHelper6.DrawImage(OnBitmap8, 0, 0);
+                         GDIHelper8.DrawImage(OnBitmap11, 0, 0);
+
+                         GDIHelper2.EndGDI();
+                         GDIHelper4.EndGDI();
+                         GDIHelper6.EndGDI();
+                         GDIHelper8.EndGDI();
+
+                         TextureHandle2.Update(GDIHelper2);
+                         TextureHandle4.Update(GDIHelper4);
+                         TextureHandle6.Update(GDIHelper6);
+                         TextureHandle8.Update(GDIHelper8);
+                     }
+                     //停車
+                     else
+                     {
+                         //●点滅+パトランプ消灯
+                         if (elapsed.TotalSeconds < 1)
+                         {
+                             Passedtime = Passedtime + elapsed;
+                         }
+                         if (Passedtime.TotalMilliseconds > 600)
+                         {
+                             Passedtime = Passedtime - TimeSpan.FromMilliseconds(600);
+                             GDIHelper1.BeginGDI();
+                             GDIHelper3.BeginGDI();
+                             GDIHelper5.BeginGDI();
+                             GDIHelper7.BeginGDI();
+                             GDIHelper2.BeginGDI();
+                             GDIHelper4.BeginGDI();
+                             GDIHelper6.BeginGDI();
+                             GDIHelper8.BeginGDI();
+                             {
+                                 if (isLighting)
+                                 {
+                                     GDIHelper1.DrawImage(OffBitmap1, 0, 0);
+                                     GDIHelper3.DrawImage(OffBitmap4, 0, 0);
+                                     GDIHelper5.DrawImage(OffBitmap7, 0, 0);
+                                     GDIHelper7.DrawImage(OffBitmap10, 0, 0);
+                                     GDIHelper2.DrawImage(OnBitmap2, 0, 0);
+                                     GDIHelper4.DrawImage(OnBitmap5, 0, 0);
+                                     GDIHelper6.DrawImage(OnBitmap8, 0, 0);
+                                     GDIHelper8.DrawImage(OnBitmap11, 0, 0);
+                                     isLighting = false;
+                                 }
+                                 else
+                                 {
+                                     GDIHelper1.DrawImage(OnBitmap1, 0, 0);
+                                     GDIHelper3.DrawImage(OnBitmap4, 0, 0);
+                                     GDIHelper5.DrawImage(OnBitmap7, 0, 0);
+                                     GDIHelper7.DrawImage(OnBitmap10, 0, 0);
+                                     GDIHelper2.DrawImage(OnBitmap2, 0, 0);
+                                     GDIHelper4.DrawImage(OnBitmap5, 0, 0);
+                                     GDIHelper6.DrawImage(OnBitmap8, 0, 0);
+                                     GDIHelper8.DrawImage(OnBitmap11, 0, 0);
+                                     isLighting = true;
+                                 }
+                             }
+                             GDIHelper1.EndGDI();
+                             GDIHelper3.EndGDI();
+                             GDIHelper5.EndGDI();
+                             GDIHelper7.EndGDI();
+                             GDIHelper2.EndGDI();
+                             GDIHelper4.EndGDI();
+                             GDIHelper6.EndGDI();
+                             GDIHelper8.EndGDI();
+                             TextureHandle2.Update(GDIHelper2);
+                             TextureHandle4.Update(GDIHelper4);
+                             TextureHandle6.Update(GDIHelper6);
+                             TextureHandle8.Update(GDIHelper8);
+                             TextureHandle1.Update(GDIHelper1);
+                             TextureHandle3.Update(GDIHelper3);
+                             TextureHandle5.Update(GDIHelper5);
+                             TextureHandle7.Update(GDIHelper7);
+
+                         }
+                     }
+                     BveHacker.MainFormSource.Text = Passedtime.ToString();
+                 }
+             }
+         }
+         //ドア開
+         else
+         {
+             //●点灯+パトランプ点滅
+             GDIHelper1.BeginGDI();
+             GDIHelper1.DrawImage(OffBitmap3, 0, 0);
+             GDIHelper1.EndGDI();
+             TextureHandle1.Update(GDIHelper1);
+
+             GDIHelper3.BeginGDI();
+             GDIHelper3.DrawImage(OffBitmap6, 0, 0);
+             GDIHelper3.EndGDI();
+             TextureHandle3.Update(GDIHelper3);
+
+             GDIHelper5.BeginGDI();
+             GDIHelper5.DrawImage(OffBitmap9, 0, 0);
+             GDIHelper5.EndGDI();
+             TextureHandle5.Update(GDIHelper5);
+
+             GDIHelper7.BeginGDI();
+             GDIHelper7.DrawImage(OffBitmap12, 0, 0);
+             GDIHelper7.EndGDI();
+             TextureHandle7.Update(GDIHelper7);
+
+             if (elapsed.TotalSeconds < 1)
+             {
+                 Passedtime = Passedtime + elapsed;
+             }
+             if (Passedtime.TotalMilliseconds > 600)
+             {
+                 Passedtime = Passedtime - TimeSpan.FromMilliseconds(600);
+                 GDIHelper2.BeginGDI();
+                 GDIHelper4.BeginGDI();
+                 GDIHelper6.BeginGDI();
+                 GDIHelper8.BeginGDI();
+                 {
+                     if (isLighting)
+                     {
+                         GDIHelper2.DrawImage(OnBitmap2, 0, 0);
+                         GDIHelper4.DrawImage(OnBitmap5, 0, 0);
+                         GDIHelper6.DrawImage(OnBitmap8, 0, 0);
+                         GDIHelper8.DrawImage(OnBitmap11, 0, 0);
+                         isLighting = false;
+                     }
+                     else
+                     {
+                         GDIHelper2.DrawImage(OffBitmap2, 0, 0);
+                         GDIHelper4.DrawImage(OffBitmap5, 0, 0);
+                         GDIHelper6.DrawImage(OffBitmap8, 0, 0);
+                         GDIHelper8.DrawImage(OffBitmap11, 0, 0);
+                         isLighting = true;
+                     }
+                 }
+                 GDIHelper2.EndGDI();
+                 GDIHelper4.EndGDI();
+                 GDIHelper6.EndGDI();
+                 GDIHelper8.EndGDI();
+                 TextureHandle2.Update(GDIHelper2);
+                 TextureHandle4.Update(GDIHelper4);
+                 TextureHandle6.Update(GDIHelper6);
+                 TextureHandle8.Update(GDIHelper8);
+             }
+             BveHacker.MainFormSource.Text = Passedtime.ToString();
+         }
+     }
+ }
+</a></code></pre></div>
+
+<p>
+　とりあえず<code>Tick</code>の中身をすべて書きました。恐ろしく長いですね。短く書くのが腕の見せどころでしょうが、素人の私には短く書くなど到底できませんでした。
+一応フローチャートと対応しているはずなので…見比べてみてください。このコードを書くと同時に、<code>private</code>を列挙している箇所に新しく以下を追加しました。
+</p>
+
+<div class="code-block">
+	<div class="code-header">
+		<button class="copy-btn" onclick="copyCode(this)">Copy</button>
+</div><pre><code class="language-cs">private bool IsRunning = false;
+private TimeSpan Elapsed = TimeSpan.Zero;
+</a></code></pre></div>
+
+<p>
+　特に詳しく説明するところはないとは思いますが、点滅は前回と同じようなコードを使いました。なお、「点滅する丸印と点灯する四角印」のように点滅と点灯が混在する動作の場合は、
+<code>isLighting</code>が<code>true</code>と<code>false</code>のときで本来<code>OnBitmap</code>↔<code>OffBitmap</code>とするところを<code>OnBitmap</code>↔<code>OnBitmap</code>や
+<code>OffBitmap</code>↔<code>OffBitmap</code>のようにして点滅と点灯を両立させました。
+動かすテクスチャの量が前回と段違いで多いため、どのテクスチャがどの<code>Bitmap</code>に対応しているか途中何度もわからなくなりました。
+前回との変更点といえば、点滅間隔を400msから600msに伸ばしたことくらいだと思います。定位置判定や速度の取得等に関しては後ほど加筆しようと思います。</p>
 
 <h4>④完成</h4>
 <p>
-執筆中…
+　さて、これで完成です。ビルドして動作させてみましょう。改良などで加筆するかもしれませんが、いったん全体のコードを置いておきます。
 </p>
--->
-				</article>
+
+
+<div class="code-block">
+	<div class="code-header">
+		<button class="copy-btn" onclick="copyCode(this)">Copy</button>
+</div><pre><code class="language-cs">using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+
+using BveTypes.ClassWrappers;
+
+using BveEx.PluginHost;
+using BveEx.PluginHost.Plugins;
+using Zbx1425.DXDynamicTexture;
+
+using System.IO;
+using System.Reflection;
+using System.Xml.Linq;
+using System.Threading;
+using static System.Collections.Specialized.BitVector32;
+using System.Drawing.Text;
+using System.Diagnostics.Eventing.Reader;
+using BveEx.Extensions.Native;
+
+namespace BveEx.Samples.MapPlugins.FormDoorLamps
+{
+    [PluginAttribute(PluginType.MapPlugin)]
+    public class FormDoorLamps : AssemblyPluginBase
+    {
+        private TextureHandle TextureHandle1;
+        private TextureHandle TextureHandle2;
+        private GDIHelper GDIHelper1;
+        private GDIHelper GDIHelper2;
+        private Bitmap OnBitmap1;
+        private Bitmap OffBitmap1;
+        private Bitmap OnBitmap2;
+        private Bitmap OffBitmap2;
+        private Bitmap OffBitmap3;
+
+        private TextureHandle TextureHandle3;
+        private TextureHandle TextureHandle4;
+        private GDIHelper GDIHelper3;
+        private GDIHelper GDIHelper4;
+        private Bitmap OnBitmap4;
+        private Bitmap OffBitmap4;
+        private Bitmap OnBitmap5;
+        private Bitmap OffBitmap5;
+        private Bitmap OffBitmap6;
+
+        private TextureHandle TextureHandle5;
+        private TextureHandle TextureHandle6;
+        private GDIHelper GDIHelper5;
+        private GDIHelper GDIHelper6;
+        private Bitmap OnBitmap7;
+        private Bitmap OffBitmap7;
+        private Bitmap OnBitmap8;
+        private Bitmap OffBitmap8;
+        private Bitmap OffBitmap9;
+
+        private TextureHandle TextureHandle7;
+        private TextureHandle TextureHandle8;
+        private GDIHelper GDIHelper7;
+        private GDIHelper GDIHelper8;
+        private Bitmap OnBitmap10;
+        private Bitmap OffBitmap10;
+        private Bitmap OnBitmap11;
+        private Bitmap OffBitmap11;
+        private Bitmap OffBitmap12;
+
+        private Bitmap ShinjukuBitmap;
+
+        private TimeSpan Passedtime = TimeSpan.Zero;
+        private bool isLighting = false;
+
+        public FormDoorLamps(PluginBuilder builder) : base(builder)
+        {
+            BveHacker.ScenarioCreated += OnScenarioCreated;
+            string baseDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            OffBitmap1 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/FD_1G.png"));
+            OnBitmap1 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/FD_1F.png"));
+            OffBitmap2 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/pato_on.png"));
+            OnBitmap2 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/pato.png"));
+            OffBitmap3 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/FD_1C.png"));
+
+            OffBitmap4 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/FD_2G.png"));
+            OnBitmap4 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/FD_2F.png"));
+            OffBitmap5 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/pato_on.png"));
+            OnBitmap5 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/pato.png"));
+            OffBitmap6 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/FD_2C.png"));
+
+            OffBitmap7 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/FD_2G.png"));
+            OnBitmap7 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/FD_2F.png"));
+            OffBitmap8 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/pato10_on.png"));
+            OnBitmap8 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/pato10.png"));
+            OffBitmap9 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/FD_2C.png"));
+
+            OffBitmap10 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/FD_2G.png"));
+            OnBitmap10 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/FD_2F.png"));
+            OffBitmap11 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/pato_on.png"));
+            OnBitmap11 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/pato5.png"));
+            OffBitmap12 = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/FD_2C.png"));
+
+            ShinjukuBitmap = new Bitmap(System.IO.Path.Combine(baseDirectory, "../../Structures/FD_lamp/FD_2.png"));
+        }
+
+        public override void Dispose()
+        {
+            BveHacker.ScenarioCreated -= OnScenarioCreated;
+        }
+        private void OnScenarioCreated(ScenarioCreatedEventArgs e)
+        {
+            Model targetModel1 = e.Scenario.Map.StructureModels["fd_1"];
+            TextureHandle1 = targetModel1.Register("FD_1F.png");
+            Model targetModel2 = e.Scenario.Map.StructureModels["fd_1"];
+            TextureHandle2 = targetModel2.Register("pato.png");
+            GDIHelper1 = new GDIHelper(TextureHandle1.Width, TextureHandle1.Height);
+            GDIHelper2 = new GDIHelper(TextureHandle2.Width, TextureHandle2.Height);
+
+            Model targetModel3 = e.Scenario.Map.StructureModels["fd_2"];
+            TextureHandle3 = targetModel3.Register("FD_2F.png");
+            Model targetModel4 = e.Scenario.Map.StructureModels["fd_2"];
+            TextureHandle4 = targetModel4.Register("pato.png");
+            GDIHelper3 = new GDIHelper(TextureHandle3.Width, TextureHandle3.Height);
+            GDIHelper4 = new GDIHelper(TextureHandle4.Width, TextureHandle4.Height);
+
+            Model targetModel5 = e.Scenario.Map.StructureModels["fd_3"];
+            TextureHandle5 = targetModel5.Register("FD_2F.png");
+            Model targetModel6 = e.Scenario.Map.StructureModels["fd_3"];
+            TextureHandle6 = targetModel6.Register("pato10.png");
+            GDIHelper5 = new GDIHelper(TextureHandle5.Width, TextureHandle5.Height);
+            GDIHelper6 = new GDIHelper(TextureHandle6.Width, TextureHandle6.Height);
+
+            Model targetModel7 = e.Scenario.Map.StructureModels["fd_4"];
+            TextureHandle7 = targetModel7.Register("FD_2F.png");
+            Model targetModel8 = e.Scenario.Map.StructureModels["fd_4"];
+            TextureHandle8 = targetModel8.Register("pato5.png");
+            GDIHelper7 = new GDIHelper(TextureHandle7.Width, TextureHandle7.Height);
+            GDIHelper8 = new GDIHelper(TextureHandle8.Width, TextureHandle8.Height);
+        }
+
+        public override void Tick(TimeSpan elapsed)
+        {
+            //現在情報取得
+            double location = BveHacker.Scenario.VehicleLocation.Location;
+            int currentStationIndex = BveHacker.Scenario.Map.Stations.CurrentIndex;
+            DoorSet doorSet = BveHacker.Scenario.Vehicle.Doors;
+
+            //nextSta
+            Station nSta = BveHacker.Scenario.Map.Stations[currentStationIndex + 1] as Station;
+            double nStaLocation = nSta.Location;
+            double nStopMax = nSta.MaxStopPosition;
+            double nStopMin = nSta.MinStopPosition;
+
+            //停通判定
+            INative speed = Extensions.GetExtension();
+            double NowSpeed = speed.VehicleState.Speed;
+
+            //新宿停車中
+            if (currentStationIndex == -1)
+            {
+                if (!doorSet.AreAllClosed)
+                {
+                    //□ﾊﾟﾄﾗﾝﾌﾟ
+                    GDIHelper3.BeginGDI();
+                    GDIHelper3.DrawImage(ShinjukuBitmap, 0, 0);
+                    GDIHelper3.EndGDI();
+                    TextureHandle3.Update(GDIHelper3);
+
+                    GDIHelper5.BeginGDI();
+                    GDIHelper5.DrawImage(ShinjukuBitmap, 0, 0);
+                    GDIHelper5.EndGDI();
+                    TextureHandle5.Update(GDIHelper5);
+
+                    if (elapsed.TotalSeconds < 1)
+                    {
+                        Passedtime = Passedtime + elapsed;
+                    }
+                    if (Passedtime.TotalMilliseconds > 600)
+                    {
+                        Passedtime = Passedtime - TimeSpan.FromMilliseconds(600);
+                        GDIHelper2.BeginGDI();
+                        GDIHelper4.BeginGDI();
+                        GDIHelper6.BeginGDI();
+                        GDIHelper8.BeginGDI();
+                        {
+                            if (isLighting)
+                            {
+                                GDIHelper2.DrawImage(OnBitmap2, 0, 0);
+                                GDIHelper4.DrawImage(OnBitmap5, 0, 0);
+                                GDIHelper6.DrawImage(OnBitmap8, 0, 0);
+                                GDIHelper8.DrawImage(OnBitmap11, 0, 0);
+                                isLighting = false;
+                            }
+                            else
+                            {
+                                GDIHelper2.DrawImage(OffBitmap2, 0, 0);
+                                GDIHelper4.DrawImage(OffBitmap5, 0, 0);
+                                GDIHelper6.DrawImage(OffBitmap8, 0, 0);
+                                GDIHelper8.DrawImage(OffBitmap11, 0, 0);
+                                isLighting = true;
+                            }
+                        }
+                        GDIHelper2.EndGDI();
+                        GDIHelper4.EndGDI();
+                        GDIHelper6.EndGDI();
+                        GDIHelper8.EndGDI();
+                        TextureHandle2.Update(GDIHelper2);
+                        TextureHandle4.Update(GDIHelper4);
+                        TextureHandle6.Update(GDIHelper6);
+                        TextureHandle8.Update(GDIHelper8);
+                    }
+                    BveHacker.MainFormSource.Text = Passedtime.ToString();
+                }
+            }
+            //新宿以外
+            if (currentStationIndex >= 0)
+            {
+                //previousSta
+                Station pSta = BveHacker.Scenario.Map.Stations[currentStationIndex] as Station;
+                double pStaLocation = pSta.Location;
+                double pStopMax = pSta.MaxStopPosition;
+                double pStopMin = pSta.MinStopPosition;
+
+                //ドア閉
+                if (doorSet.AreAllClosed)
+                {
+                    //定位置
+                    if (nStopMin < location && location < nStopMax || pStopMin < location && location < pStopMax)
+                    {
+                        if (0 < location && location < 300)//新宿用
+                        {
+                            //■のみ点灯（新宿用）
+                            GDIHelper3.BeginGDI();
+                            GDIHelper3.DrawImage(OffBitmap4, 0, 0);
+                            GDIHelper3.EndGDI();
+                            TextureHandle3.Update(GDIHelper3);
+
+                            GDIHelper5.BeginGDI();
+                            GDIHelper5.DrawImage(OffBitmap7, 0, 0);
+                            GDIHelper5.EndGDI();
+                            TextureHandle5.Update(GDIHelper5);
+                        }
+                        else
+                        {
+                            //●■点灯
+                            GDIHelper1.BeginGDI();
+                            GDIHelper1.DrawImage(OnBitmap1, 0, 0);
+                            GDIHelper1.EndGDI();
+                            TextureHandle1.Update(GDIHelper1);
+
+                            GDIHelper3.BeginGDI();
+                            GDIHelper3.DrawImage(OnBitmap4, 0, 0);
+                            GDIHelper3.EndGDI();
+                            TextureHandle3.Update(GDIHelper3);
+
+                            GDIHelper5.BeginGDI();
+                            GDIHelper5.DrawImage(OnBitmap7, 0, 0);
+                            GDIHelper5.EndGDI();
+                            TextureHandle5.Update(GDIHelper5);
+
+                            GDIHelper7.BeginGDI();
+                            GDIHelper7.DrawImage(OnBitmap10, 0, 0);
+                            GDIHelper7.EndGDI();
+                            TextureHandle7.Update(GDIHelper7);
+                        }
+                    }
+                    //通常時の動作
+                    else
+                    {
+                        if (0 < location && location < 300)
+                        {
+                            //■のみ点灯（新宿用）
+                            GDIHelper3.BeginGDI();
+                            GDIHelper3.DrawImage(OffBitmap4, 0, 0);
+                            GDIHelper3.EndGDI();
+                            TextureHandle3.Update(GDIHelper3);
+
+                            GDIHelper5.BeginGDI();
+                            GDIHelper5.DrawImage(OffBitmap7, 0, 0);
+                            GDIHelper5.EndGDI();
+                            TextureHandle5.Update(GDIHelper5);
+                        }
+                        else
+                        {
+                            //通過
+                            if (NowSpeed > 45)
+                            {
+                                //●消灯
+                                GDIHelper1.BeginGDI();
+                                GDIHelper3.BeginGDI();
+                                GDIHelper5.BeginGDI();
+                                GDIHelper7.BeginGDI();
+
+                                GDIHelper1.DrawImage(OffBitmap1, 0, 0);
+                                GDIHelper3.DrawImage(OffBitmap4, 0, 0);
+                                GDIHelper5.DrawImage(OffBitmap7, 0, 0);
+                                GDIHelper7.DrawImage(OffBitmap10, 0, 0);
+
+                                GDIHelper1.EndGDI();
+                                GDIHelper3.EndGDI();
+                                GDIHelper5.EndGDI();
+                                GDIHelper7.EndGDI();
+
+                                TextureHandle1.Update(GDIHelper1);
+                                TextureHandle3.Update(GDIHelper3);
+                                TextureHandle5.Update(GDIHelper5);
+                                TextureHandle7.Update(GDIHelper7);
+
+                                //パトランプ消灯
+                                GDIHelper2.BeginGDI();
+                                GDIHelper4.BeginGDI();
+                                GDIHelper6.BeginGDI();
+                                GDIHelper8.BeginGDI();
+
+                                GDIHelper2.DrawImage(OnBitmap2, 0, 0);
+                                GDIHelper4.DrawImage(OnBitmap5, 0, 0);
+                                GDIHelper6.DrawImage(OnBitmap8, 0, 0);
+                                GDIHelper8.DrawImage(OnBitmap11, 0, 0);
+
+                                GDIHelper2.EndGDI();
+                                GDIHelper4.EndGDI();
+                                GDIHelper6.EndGDI();
+                                GDIHelper8.EndGDI();
+
+                                TextureHandle2.Update(GDIHelper2);
+                                TextureHandle4.Update(GDIHelper4);
+                                TextureHandle6.Update(GDIHelper6);
+                                TextureHandle8.Update(GDIHelper8);
+                            }
+                            //停車
+                            else
+                            {
+                                //●点滅+パトランプ消灯
+                                if (elapsed.TotalSeconds < 1)
+                                {
+                                    Passedtime = Passedtime + elapsed;
+                                }
+                                if (Passedtime.TotalMilliseconds > 600)
+                                {
+                                    Passedtime = Passedtime - TimeSpan.FromMilliseconds(600);
+                                    GDIHelper1.BeginGDI();
+                                    GDIHelper3.BeginGDI();
+                                    GDIHelper5.BeginGDI();
+                                    GDIHelper7.BeginGDI();
+                                    GDIHelper2.BeginGDI();
+                                    GDIHelper4.BeginGDI();
+                                    GDIHelper6.BeginGDI();
+                                    GDIHelper8.BeginGDI();
+                                    {
+                                        if (isLighting)
+                                        {
+                                            GDIHelper1.DrawImage(OffBitmap1, 0, 0);
+                                            GDIHelper3.DrawImage(OffBitmap4, 0, 0);
+                                            GDIHelper5.DrawImage(OffBitmap7, 0, 0);
+                                            GDIHelper7.DrawImage(OffBitmap10, 0, 0);
+                                            GDIHelper2.DrawImage(OnBitmap2, 0, 0);
+                                            GDIHelper4.DrawImage(OnBitmap5, 0, 0);
+                                            GDIHelper6.DrawImage(OnBitmap8, 0, 0);
+                                            GDIHelper8.DrawImage(OnBitmap11, 0, 0);
+                                            isLighting = false;
+                                        }
+                                        else
+                                        {
+                                            GDIHelper1.DrawImage(OnBitmap1, 0, 0);
+                                            GDIHelper3.DrawImage(OnBitmap4, 0, 0);
+                                            GDIHelper5.DrawImage(OnBitmap7, 0, 0);
+                                            GDIHelper7.DrawImage(OnBitmap10, 0, 0);
+                                            GDIHelper2.DrawImage(OnBitmap2, 0, 0);
+                                            GDIHelper4.DrawImage(OnBitmap5, 0, 0);
+                                            GDIHelper6.DrawImage(OnBitmap8, 0, 0);
+                                            GDIHelper8.DrawImage(OnBitmap11, 0, 0);
+                                            isLighting = true;
+                                        }
+                                    }
+                                    GDIHelper1.EndGDI();
+                                    GDIHelper3.EndGDI();
+                                    GDIHelper5.EndGDI();
+                                    GDIHelper7.EndGDI();
+                                    GDIHelper2.EndGDI();
+                                    GDIHelper4.EndGDI();
+                                    GDIHelper6.EndGDI();
+                                    GDIHelper8.EndGDI();
+                                    TextureHandle2.Update(GDIHelper2);
+                                    TextureHandle4.Update(GDIHelper4);
+                                    TextureHandle6.Update(GDIHelper6);
+                                    TextureHandle8.Update(GDIHelper8);
+                                    TextureHandle1.Update(GDIHelper1);
+                                    TextureHandle3.Update(GDIHelper3);
+                                    TextureHandle5.Update(GDIHelper5);
+                                    TextureHandle7.Update(GDIHelper7);
+
+                                }
+                            }
+                            BveHacker.MainFormSource.Text = Passedtime.ToString();
+                        }
+                    }
+                }
+                //ドア開
+                else
+                {
+                    //●点灯+パトランプ点滅
+                    GDIHelper1.BeginGDI();
+                    GDIHelper1.DrawImage(OffBitmap3, 0, 0);
+                    GDIHelper1.EndGDI();
+                    TextureHandle1.Update(GDIHelper1);
+
+                    GDIHelper3.BeginGDI();
+                    GDIHelper3.DrawImage(OffBitmap6, 0, 0);
+                    GDIHelper3.EndGDI();
+                    TextureHandle3.Update(GDIHelper3);
+
+                    GDIHelper5.BeginGDI();
+                    GDIHelper5.DrawImage(OffBitmap9, 0, 0);
+                    GDIHelper5.EndGDI();
+                    TextureHandle5.Update(GDIHelper5);
+
+                    GDIHelper7.BeginGDI();
+                    GDIHelper7.DrawImage(OffBitmap12, 0, 0);
+                    GDIHelper7.EndGDI();
+                    TextureHandle7.Update(GDIHelper7);
+
+                    if (elapsed.TotalSeconds < 1)
+                    {
+                        Passedtime = Passedtime + elapsed;
+                    }
+                    if (Passedtime.TotalMilliseconds > 600)
+                    {
+                        Passedtime = Passedtime - TimeSpan.FromMilliseconds(600);
+                        GDIHelper2.BeginGDI();
+                        GDIHelper4.BeginGDI();
+                        GDIHelper6.BeginGDI();
+                        GDIHelper8.BeginGDI();
+                        {
+                            if (isLighting)
+                            {
+                                GDIHelper2.DrawImage(OnBitmap2, 0, 0);
+                                GDIHelper4.DrawImage(OnBitmap5, 0, 0);
+                                GDIHelper6.DrawImage(OnBitmap8, 0, 0);
+                                GDIHelper8.DrawImage(OnBitmap11, 0, 0);
+                                isLighting = false;
+                            }
+                            else
+                            {
+                                GDIHelper2.DrawImage(OffBitmap2, 0, 0);
+                                GDIHelper4.DrawImage(OffBitmap5, 0, 0);
+                                GDIHelper6.DrawImage(OffBitmap8, 0, 0);
+                                GDIHelper8.DrawImage(OffBitmap11, 0, 0);
+                                isLighting = true;
+                            }
+                        }
+                        GDIHelper2.EndGDI();
+                        GDIHelper4.EndGDI();
+                        GDIHelper6.EndGDI();
+                        GDIHelper8.EndGDI();
+                        TextureHandle2.Update(GDIHelper2);
+                        TextureHandle4.Update(GDIHelper4);
+                        TextureHandle6.Update(GDIHelper6);
+                        TextureHandle8.Update(GDIHelper8);
+                    }
+                    BveHacker.MainFormSource.Text = Passedtime.ToString();
+                }
+            }
+        }
+    }
+}
+</a></code></pre></div>
+
+</article>
 			</section>
 		</section>
 	</div>
 
    <header id="footer"></header>
    <script src="js/footer.js"></script>
+
+     <script>
+    function copyCode(btn) {
+      const code = btn.closest(".code-block").querySelector("code").innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        btn.textContent = "Copied!";
+        setTimeout(() => {
+          btn.textContent = "Copy";
+        }, 1500);
+      });
+    }
+  </script>
+
+  <!-- Highlight.js本体 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+
+  <!-- C#言語定義 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/cs.min.js"></script>
+
+  <!-- 行番号プラグイン -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+
+  <script>
+    hljs.highlightAll();
+    hljs.initLineNumbersOnLoad();
+  </script>
 
 </body>
 </html>
