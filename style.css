@@ -414,7 +414,7 @@ ul.footnav li {
   padding: 20px 0 10px 0;
   text-align: center;
   font-style: normal;
-  font-size: 12px;
+  font-size: 13px;
   color: #000;
 }
 
@@ -464,7 +464,7 @@ code {
   color: #ccc;
   border-radius: 6px;
   font-family: "Fira Code", monospace;
-  font-size: 12px;
+  font-size: 13px;
   overflow-x: auto;
   word-break: break-word;
 }
