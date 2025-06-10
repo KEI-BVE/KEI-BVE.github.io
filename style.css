@@ -30,7 +30,6 @@ h3 {
   margin: 0 auto;
   padding: 0 1em;
 }
-
 /* ========================
    ナビゲーションメニュー（共通）
    ======================== */
@@ -147,121 +146,8 @@ h3 {
 /* ========================
    スマホ表示用スタイル（768px以下）
    ======================== */
-@media screen and (max-width: 768px) {
-  body, .gridWrapper {
-    padding: 0 10px;
-  }
 
-  body {
-    font-size: 14px;
-  }
-
-  .gridWrapper {
-    grid-template-columns: 1fr !important;
-    gap: 15px;
-  }
-
-  #header .logo a {
-    font-size: 24px;
-    padding-left: 10px;
-  }
-
-  #header .logo span {
-    font-size: 16px;
-    padding-left: 10px;
-  }
-
-  #mainNav .inner {
-    flex-direction: column;
-  }
-
-  #mainNav .menu {
-    position: fixed;
-    top: 10px;
-    right: 20px;
-    background-color: #444;
-    color: #fff;
-    padding: 10px 15px;
-    cursor: pointer;
-    z-index: 1000;
-    border-radius: 4px;
-    user-select: none;
-    display: block;
-  }
-
-  #mainNav .panel {
-    position: fixed;
-    top: 0;
-    right: 0px;
-    width: 300px;
-    height: 100%;
-    background: #000;
-    z-index: 999;
-    padding: 60px 20px;
-    transition: right 0.3s ease;
-    overflow-y: auto;
-  }
-
-  #mainNav .panel.open {
-    right: 0;
-  }
-
-  #mainNav .panel ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  #mainNav .panel ul li {
-    border-bottom: 1px solid #333;
-  }
-
-  #mainNav .panel ul li a {
-    display: block;
-    padding: 15px 10px;
-    color: #fff;
-    text-decoration: none;
-  }
-
-  #mainNav .panel ul > li.has-sub > a {
-    position: relative;
-  }
-
-  #mainNav .panel ul > li.has-sub > a::after {
-    content: " ▼";
-    font-size: 0.8em;
-    color: #aaa;
-    margin-left: 5px;
-    pointer-events: none;
-  }
-
-  #mainNav .panel ul > li.has-sub.open > a::after {
-    content: " ▲";
-  }
-
-  #mainNav .panel ul > li.has-sub > ul.sub-menu {
-    display: none;
-    padding-left: 15px;
-    transition: all 0.3s ease;
-  }
-
-  #mainNav .panel ul > li.has-sub.open > ul.sub-menu {
-    display: block;
-  }
-}
-
-  .panel {
-  display: none;
-  }
-
-  .open {
-  display: block;
-  }
-
-  .menu {
-  cursor: pointer;
-  }
-
+   
 /* ========================
    リンク集ページスタイル
    ======================== */

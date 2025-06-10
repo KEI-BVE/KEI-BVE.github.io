@@ -120,16 +120,13 @@
    <script src="js/footer.js"></script>
 
 
-<!-- ダイアログのオーバーレイ -->
+<!--
 <div id="overlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.4); z-index:1000;"></div>
 
-<!-- スマホ限定ダイアログ -->
 <div id="mobileDialog" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -30%); background:#fff; padding:20px; box-shadow:0 0 10px rgba(0,0,0,0.5); border-radius:8px; z-index:1001;">
   <p>スマートフォンでの閲覧ありがとうございます。現在サイト移行・作成中のため、メニューバーに不具合が生じています。お手数をおかけしますが、パソコン用表示にしての閲覧をお願いいたします。</p>
-  <!--<button id="closeMobileDialog">閉じる</button>-->
 </div>
 
-<!-- スマホ限定ダイアログのスクリプト -->
 <script>
   function showMobileDialog() {
     if(window.innerWidth <= 768) {
@@ -137,11 +134,6 @@
       document.getElementById('overlay').style.display = 'block';
     }
   }
-
-  	/*document.getElementById('closeMobileDialog').addEventListener('click', function() {
-    document.getElementById('mobileDialog').style.display = 'none';
-    document.getElementById('overlay').style.display = 'none';
-  });*/
 
   window.addEventListener('load', showMobileDialog);
 
@@ -152,7 +144,7 @@
     }
   });
 </script>
-
+-->
 
 </body>
 </html>
