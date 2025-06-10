@@ -142,50 +142,6 @@ h3 {
 }
 
 /* ========================
-   スマホ表示（768px以下）
-   ======================== */
-@media screen and (max-width: 768px) {
-  #mainNav .panel {
-    display: none;
-    flex-direction: column;
-  }
-
-  #mainNav .panel.open {
-    display: flex;
-  }
-
-  #mainNav .panel ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    flex-direction: column;
-  }
-
-  #mainNav .panel ul > li {
-    border-top: 1px solid #555;
-  }
-
-  #mainNav .panel ul > li > a {
-    color: #fff;
-    text-decoration: none;
-    padding: 12px;
-    display: block;
-  }
-
-  .sub-menu {
-    background-color: #555;
-  }
-
-  li.open > .sub-menu {
-    display: block;
-  }
-
-  .sub-menu li a {
-    padding-left: 24px;
-  }
-}
-
-/* ========================
    リンク集ページスタイル
    ======================== */
 .link-wrapper {
