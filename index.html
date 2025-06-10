@@ -119,28 +119,47 @@
    <header id="footer"></header>
    <script src="js/footer.js"></script>
    <script src="/js/nav.js"></script>
-   
-<div id="overlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.4); z-index:1000;"></div>
 
-<div id="mobileDialog" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -30%); background:#fff; padding:20px; box-shadow:0 0 10px rgba(0,0,0,0.5); border-radius:8px; z-index:1001;">
+<div id="mobileDialog" style="display:none; position:fixed; top:20%; left:50%; transform:translateX(-50%); background:#fff; padding:20px; border:1px solid #ccc; z-index:1001;">
   <p>スマートフォンでの閲覧ありがとうございます。現在サイト移行・作成中のため、メニューバーに不具合が生じています。お手数をおかけしますが、パソコン用表示にしての閲覧をお願いいたします。</p>
+  <button id="desktopViewBtn">パソコン用表示に切り替える</button>
 </div>
 
+<div id="overlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:1000;"></div>
+
 <script>
-  function showMobileDialog() {
-    if(window.innerWidth <= 768) {
-      document.getElementById('mobileDialog').style.display = 'block';
-      document.getElementById('overlay').style.display = 'block';
+  let desktopMode = false;
+
+  function updateView() {
+    if (desktopMode) {
+      // パソコンモードなら非表示
+      document.getElementById('mobileDialog').style.display = 'none';
+      document.getElementById('overlay').style.display = 'none';
+    } else {
+      // 画面幅がモバイルサイズなら表示
+      if(window.innerWidth <= 768) {
+        document.getElementById('mobileDialog').style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
+      } else {
+        document.getElementById('mobileDialog').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+      }
     }
   }
 
-  window.addEventListener('load', showMobileDialog);
+  window.addEventListener('load', updateView);
 
   window.addEventListener('resize', () => {
+    // 画面幅がパソコンサイズになったら強制的にdesktopMode解除してパソコン表示に
     if(window.innerWidth > 768) {
-      document.getElementById('mobileDialog').style.display = 'none';
-      document.getElementById('overlay').style.display = 'none';
+      desktopMode = false;
     }
+    updateView();
+  });
+
+  document.getElementById('desktopViewBtn').addEventListener('click', () => {
+    desktopMode = true;
+    updateView();
   });
 </script>
 
