@@ -26,7 +26,7 @@ h3 {
 
 /* 本文横幅設定 */
 .content {
-  max-width: 1350px; /* 必要に応じて調整 */
+  width: 95%;
   margin: 0 auto;
   padding: 0 1em;
 }
@@ -459,6 +459,7 @@ code {
    コードブロック
    ======================== */
 .code-block {
+  width: 90%;
   position: relative;
   background: #2d2d2d;
   color: #ccc;
@@ -467,6 +468,7 @@ code {
   font-size: 18px;
   overflow-x: auto;
   word-break: break-word;
+  margin: 0 auto;
 }
 
 /* コピー用ボタン */
