@@ -30,6 +30,7 @@ h3 {
   margin: 0 auto;
   padding: 0 1em;
 }
+
 /* ========================
    ナビゲーションメニュー（共通）
    ======================== */
@@ -50,30 +51,25 @@ h3 {
   cursor: pointer;
 }
 
-/* サブメニュー共通非表示 */
-#mainNav .sub-menu {
-  display: none;
-}
-
-/* openクラスが付いたときに表示 */
+/* .open クラスでサブメニューを表示 */
 #mainNav li.open > .sub-menu {
   display: block;
 }
 
-/* サブメニューを持つリンクに▼を追加 */
+/* ▼アイコン追加 */
 #mainNav li.has-sub > a::after {
   content: " ▼";
   font-size: 0.8em;
   margin-left: 4px;
-  color: #333;
+  color: #ccc;
 }
 
 /* ========================
-   PC表示用スタイル（769px以上）
+   PC表示（769px以上）
    ======================== */
 @media screen and (min-width: 769px) {
   #mainNav .menu {
-    display: none;
+    display: none; /* メニューアイコン非表示 */
   }
 
   #mainNav .panel {
@@ -102,6 +98,7 @@ h3 {
     cursor: pointer;
   }
 
+  /* ▼アイコン（再定義しなくてもOKなら省略可能） */
   #mainNav .panel ul > li:has(> .sub-menu) > a::after {
     content: " ▼";
     font-size: 0.8em;
@@ -120,7 +117,6 @@ h3 {
   }
 
   .sub-menu li {
-    margin: 0;
     position: relative;
   }
 
@@ -132,11 +128,13 @@ h3 {
     font-weight: normal;
   }
 
+  /* ホバーでサブメニュー表示 */
   #mainNav .panel ul > li:hover > .sub-menu,
   .sub-menu li:hover > .sub-menu {
     display: block !important;
   }
 
+  /* ホバー時の背景色 */
   #mainNav .panel ul > li > a:hover,
   .sub-menu li > a:hover {
     background-color: #555;
@@ -144,10 +142,49 @@ h3 {
 }
 
 /* ========================
-   スマホ表示用スタイル（768px以下）
+   スマホ表示（768px以下）
    ======================== */
+@media screen and (max-width: 768px) {
+  #mainNav .panel {
+    display: none;
+    flex-direction: column;
+  }
 
-   
+  #mainNav .panel.open {
+    display: flex;
+  }
+
+  #mainNav .panel ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-direction: column;
+  }
+
+  #mainNav .panel ul > li {
+    border-top: 1px solid #555;
+  }
+
+  #mainNav .panel ul > li > a {
+    color: #fff;
+    text-decoration: none;
+    padding: 12px;
+    display: block;
+  }
+
+  .sub-menu {
+    background-color: #555;
+  }
+
+  li.open > .sub-menu {
+    display: block;
+  }
+
+  .sub-menu li a {
+    padding-left: 24px;
+  }
+}
+
 /* ========================
    リンク集ページスタイル
    ======================== */
